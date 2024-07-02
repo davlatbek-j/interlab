@@ -2,6 +2,8 @@ HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
+!**/src/main/resources/uploads
+!**/src/main/resources/class.json
 !**/src/test/**/target/
 
 ### STS ###
