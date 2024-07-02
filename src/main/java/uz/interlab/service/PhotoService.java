@@ -40,16 +40,16 @@ public class PhotoService
 
         try
         {
-            Path filePath = Paths.get(photoUploadPath + File.separator + file.getOriginalFilename());
+            Photo photo = photoRepo.save(new Photo());
+            String originalFilename = photo.getId() +"-"+ file.getOriginalFilename();
+
+            Path filePath = Paths.get(photoUploadPath + File.separator + originalFilename);
             File uploadDir = new File(filePath.toUri());
             if (!uploadDir.exists())
                 uploadDir.mkdirs();
-
-            Photo photo = new Photo();
-
             file.transferTo(uploadDir);
 
-            photo.setName(file.getOriginalFilename());
+            photo.setName(originalFilename);
             photo.setFilepath(uploadDir.getAbsolutePath());
             photo.setType(file.getContentType());
             photo.setHttpUrl("http://localhost:8100/photo/" + photo.getName());

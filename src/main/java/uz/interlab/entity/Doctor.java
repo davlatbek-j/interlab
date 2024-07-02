@@ -25,4 +25,6 @@ public class Doctor
     String specialityRu;
 
     String photoUrl;
+
+    Boolean active;
 }

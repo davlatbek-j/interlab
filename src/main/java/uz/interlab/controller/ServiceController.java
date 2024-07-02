@@ -3,14 +3,15 @@ package uz.interlab.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import uz.interlab.entity.Service;
+import uz.interlab.entity.ServiceDetails;
 import uz.interlab.payload.ApiResponse;
+import uz.interlab.payload.ServiceDTO;
 import uz.interlab.service.ServiceEntityService;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 
@@ -24,8 +25,46 @@ public class ServiceController
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<Service>> createService(
             @RequestParam("json") String json,
-            @RequestPart("photo") MultipartFile photo)
+            @RequestPart("icon") MultipartFile photo)
     {
         return entityService.create(json, photo);
     }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<ApiResponse<ServiceDTO>> getById(
+            @PathVariable Long id,
+            @RequestHeader(value = "Accept-Language") String lang)
+    {
+        return entityService.findById(id, lang);
+    }
+
+    @GetMapping("/get-all")
+    public ResponseEntity<ApiResponse<List<ServiceDTO>>> getAll(
+            @RequestHeader(value = "Accept-Language") String lang)
+    {
+        return entityService.findAll(lang);
+    }
+
+    @GetMapping("/get-full-data/{id}")
+    public ResponseEntity<ApiResponse<Service>> getFullData(@PathVariable Long id)
+    {
+        return entityService.findById(id);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ApiResponse<Service>> update(
+            @PathVariable Long id,
+            @RequestParam(value = "json", required = false) String newJson,
+            @RequestPart(value = "icon", required = false) MultipartFile newPhoto)
+    {
+        return entityService.update(id, newJson, newPhoto);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse<?>> delete(@PathVariable Long id)
+    {
+        return entityService.deleteById(id);
+    }
+
+
 }

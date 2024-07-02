@@ -1,44 +1,49 @@
 package uz.interlab.payload;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.Doctor;
+import uz.interlab.entity.Service;
 import uz.interlab.exception.LanguageNotSupportException;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DoctorDTO
+public class ServiceDTO
 {
     Long id;
 
-    String fullName;
+    String name;
 
-    String speciality;
+    String description;
 
-    String photoUrl;
+    String iconUrl;
+
+    String detailsUrl;
 
     Boolean active;
 
-    public DoctorDTO(Doctor entity, String lang)
+    public ServiceDTO(Service entity, String lang)
     {
         this.id = entity.getId();
-        this.photoUrl = entity.getPhotoUrl();
+        this.iconUrl = entity.getIconUrl();
+        this.detailsUrl = entity.getDetailsUrl();
         this.active = entity.getActive();
         switch (lang.toLowerCase())
         {
             case "uz":
             {
-                this.fullName = entity.getFullNameUz();
-                this.speciality = entity.getSpecialityUz();
+                this.name = entity.getNameUz();
+                this.description = entity.getDescriptionUz();
                 break;
             }
             case "ru":
             {
-                this.fullName = entity.getFullNameRu();
-                this.speciality = entity.getSpecialityRu();
+                this.name = entity.getNameRu();
+                this.description = entity.getDescriptionRu();
                 break;
             }
             default:

@@ -11,24 +11,24 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-@Table(name = "service")
-public class Service
+@Table(name = "service_details")
+public class ServiceDetails
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     String nameUz;
-
     String nameRu;
 
     String descriptionUz;
-
     String descriptionRu;
 
-    String iconUrl;
+    @Column(length = 2000)
+    String textUz;
 
-    String detailsUrl;
+    @Column(length = 2000)
+    String textRu;
 
-    Boolean active;
+    String photoUrl;
 }

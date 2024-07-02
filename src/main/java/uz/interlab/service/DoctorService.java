@@ -31,8 +31,7 @@ public class DoctorService
         ApiResponse<Doctor> response = new ApiResponse<>();
         try
         {
-            ObjectMapper mapper = new ObjectMapper();
-            Doctor doctor = mapper.readValue(strDoctor, Doctor.class);
+            Doctor doctor = jsonMapper.readValue(strDoctor, Doctor.class);
             doctor.setId(null);
 
             Photo photo = photoService.save(photoFile);
@@ -117,6 +116,7 @@ public class DoctorService
             return ResponseEntity.status(201).body(response);
         } catch (JsonProcessingException e)
         {
+            e.printStackTrace();
             response.setMessage(e.getMessage());
             return ResponseEntity.status(400).body(response);
         }
