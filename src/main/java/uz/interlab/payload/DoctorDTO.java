@@ -35,7 +35,7 @@ public class DoctorDTO
             case "ru":
             {
                 this.fullName = entity.getFullNameRu();
-                this.speciality = entity.getSpecialityRU();
+                this.speciality = entity.getSpecialityRu();
                 break;
             }
             default:

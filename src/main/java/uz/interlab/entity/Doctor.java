@@ -22,7 +22,7 @@ public class Doctor
     String fullNameRu;
 
     String specialityUz;
-    String specialityRU;
+    String specialityRu;
 
     String photoUrl;
 }
