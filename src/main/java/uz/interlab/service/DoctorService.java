@@ -12,7 +12,6 @@ import uz.interlab.entity.Photo;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.DoctorDTO;
 import uz.interlab.respository.DoctorRepository;
-import uz.interlab.respository.PhotoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +23,8 @@ public class DoctorService
 {
 
     private final DoctorRepository doctorRepo;
-    private final PhotoRepository photoRepo;
     private final PhotoService photoService;
+    private final ObjectMapper jsonMapper;
 
     public ResponseEntity<ApiResponse<Doctor>> create(String strDoctor, MultipartFile photoFile)
     {
@@ -101,14 +100,14 @@ public class DoctorService
         {
             if (newJson != null)
             {
-                ObjectMapper mapper = new ObjectMapper();
-                newDoctor = mapper.readValue(newJson, Doctor.class);
-                newDoctor.setPhotoUrl(null);
+                newDoctor = jsonMapper.readValue(newJson, Doctor.class);
+                if (newPhoto == null || !(newPhoto.getSize() > 0))
+                    newDoctor.setPhotoUrl(oldPhotoUrl);
                 newDoctor.setId(id);
             } else
                 newDoctor = doctorRepo.findById(id).get();
 
-            if (newPhoto != null && newPhoto.getSize() > 0 && !oldPhotoUrl.equals(newPhoto.getOriginalFilename()))
+            if (newPhoto != null && newPhoto.getSize() > 0)
             {
                 Photo photo = photoService.save(newPhoto);
                 newDoctor.setPhotoUrl(photo.getHttpUrl());
