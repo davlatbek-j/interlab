@@ -1,4 +1,4 @@
-package uz.interlab.service;
+package uz.interlab.service.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +11,7 @@ import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.service.ServiceDTO;
 import uz.interlab.respository.ServiceDetailsRepository;
 import uz.interlab.respository.ServiceRepository;
+import uz.interlab.service.PhotoService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,6 @@ public class ServiceEntityService
     private final ServiceRepository serviceRepo;
     private final ObjectMapper jsonMapper;
     private final PhotoService photoService;
-    private final ServiceDetailsRepository serviceDetailRepo;
 
     public ResponseEntity<ApiResponse<Service>> create(String json, MultipartFile photo)
     {

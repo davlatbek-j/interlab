@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import uz.interlab.entity.service.ServiceDetails;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.service.ServiceDetailsDTO;
-import uz.interlab.service.DetailsService;
+import uz.interlab.service.service.DetailsService;
 
 @RequiredArgsConstructor
 

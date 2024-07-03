@@ -1,4 +1,4 @@
-package uz.interlab.entity;
+package uz.interlab.entity.news;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

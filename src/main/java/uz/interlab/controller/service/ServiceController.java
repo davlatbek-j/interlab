@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import uz.interlab.entity.service.Service;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.service.ServiceDTO;
-import uz.interlab.service.ServiceEntityService;
+import uz.interlab.service.service.ServiceEntityService;
 
 import java.util.List;
 

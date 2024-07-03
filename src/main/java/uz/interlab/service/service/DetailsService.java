@@ -1,4 +1,4 @@
-package uz.interlab.service;
+package uz.interlab.service.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +12,7 @@ import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.service.ServiceDetailsDTO;
 import uz.interlab.respository.DetailsRepository;
 import uz.interlab.respository.ServiceRepository;
+import uz.interlab.service.PhotoService;
 
 import java.util.Optional;
 

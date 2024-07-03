@@ -1,4 +1,4 @@
-package uz.interlab.service;
+package uz.interlab.service.doctor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

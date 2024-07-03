@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import uz.interlab.entity.doctor.DoctorDetails;
 import uz.interlab.payload.ApiResponse;
-import uz.interlab.service.DoctorDetailsService;
+import uz.interlab.service.doctor.DoctorDetailsService;
 
 @RequiredArgsConstructor
 
