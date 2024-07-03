@@ -30,7 +30,8 @@ public class ServiceDTO
     {
         this.id = entity.getId();
         this.iconUrl = entity.getIconUrl();
-        this.detailsUrl = "https://localhost:8100/service-details/get/" + entity.getId();
+        if (entity.getDetails() != null)
+            this.detailsUrl = "http://localhost:8100/service-details/get?service-id=" + entity.getId() + "&lang=" + lang;
         this.active = entity.isActive();
         switch (lang.toLowerCase())
         {

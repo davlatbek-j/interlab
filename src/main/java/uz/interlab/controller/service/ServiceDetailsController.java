@@ -27,12 +27,12 @@ public class ServiceDetailsController
         return detailsService.createDetails(serviceId, jsonDetails, photo);
     }
 
-    @GetMapping("/get/{service-id}")
+    @GetMapping("/get")
     public ResponseEntity<ApiResponse<ServiceDetailsDTO>> getServiceDetails(
-            @PathVariable(name = "service-id") Long serviceId,
-            @RequestHeader(value = "Accept-Language") String lang)
+            @RequestParam(name = "service-id") Long serviceId,
+            @RequestParam(value = "lang") String lang)
     {
-        return detailsService.findByServiceId(serviceId,lang);
+        return detailsService.findByServiceId(serviceId, lang);
     }
 
     @GetMapping("/get-full-data/{id}")
@@ -47,7 +47,7 @@ public class ServiceDetailsController
             @RequestParam(value = "json") String newJson,
             @RequestPart(value = "photo") MultipartFile newPhoto)
     {
-        return detailsService.update(id,newJson,newPhoto);
+        return detailsService.update(id, newJson, newPhoto);
     }
 
     @DeleteMapping("/delete/{id}")

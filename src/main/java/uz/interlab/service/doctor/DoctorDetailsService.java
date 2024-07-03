@@ -1,7 +1,6 @@
 package uz.interlab.service.doctor;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,10 +62,9 @@ public class DoctorDetailsService
         }
         Long detailsId = doctorRepo.findDetailsId(doctorId);
 
-        DoctorDetails newDoctorDetails = detailsRepo.save(doctorDetails);
-        newDoctorDetails.setId(detailsId);
+        doctorDetails.setId(detailsId);
 
-        detailsRepo.save(newDoctorDetails);
+        DoctorDetails newDoctorDetails = detailsRepo.save(doctorDetails);
 
         response.setMessage("Updated");
         response.setData(newDoctorDetails);
@@ -82,6 +80,7 @@ public class DoctorDetailsService
             return ResponseEntity.status(404).body(response);
         }
         Long detailsId = doctorRepo.findDetailsId(doctorId);
+        doctorRepo.setDetailsId(doctorId, null);
         detailsRepo.deleteById(detailsId);
         response.setMessage("Deleted");
         return ResponseEntity.ok(response);
