@@ -1,4 +1,4 @@
-package uz.interlab.service.doctor;
+package uz.interlab.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,12 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import uz.interlab.entity.doctor.Doctor;
+import uz.interlab.entity.Doctor;
 import uz.interlab.entity.Photo;
 import uz.interlab.payload.ApiResponse;
-import uz.interlab.payload.doctor.DoctorDTO;
+import uz.interlab.payload.DoctorDTO;
 import uz.interlab.respository.DoctorRepository;
-import uz.interlab.service.PhotoService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,8 @@ public class DoctorService
         ApiResponse<Doctor> response = new ApiResponse<>();
         try
         {
-            Doctor doctor = jsonMapper.readValue(strDoctor, Doctor.class);
+            ObjectMapper mapper = new ObjectMapper();
+            Doctor doctor = mapper.readValue(strDoctor, Doctor.class);
             doctor.setId(null);
 
             Photo photo = photoService.save(photoFile);
@@ -117,7 +117,6 @@ public class DoctorService
             return ResponseEntity.status(201).body(response);
         } catch (JsonProcessingException e)
         {
-            e.printStackTrace();
             response.setMessage(e.getMessage());
             return ResponseEntity.status(400).body(response);
         }
