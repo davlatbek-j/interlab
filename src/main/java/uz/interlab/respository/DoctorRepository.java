@@ -16,4 +16,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long>
     @Modifying
     @Query(value = "UPDATE doctor SET details_id = :detailsId WHERE id = :doctorId", nativeQuery = true)
     void setDetailsId(@Param("doctorId") Long doctorId, @Param("detailsId") Long detailsId);
+
+    @Query(value = "SELECT details_id FROM doctor WHERE id =:doctorId", nativeQuery = true)
+    Long findDetailsId(@Param("doctorId") Long doctorId);
 }
