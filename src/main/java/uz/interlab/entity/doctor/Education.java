@@ -1,6 +1,9 @@
-package uz.interlab.entity;
+package uz.interlab.entity.doctor;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +14,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-@Table(name = "service")
-public class Service
+public class Education
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,14 +23,4 @@ public class Service
     String nameUz;
 
     String nameRu;
-
-    String descriptionUz;
-
-    String descriptionRu;
-
-    String iconUrl;
-
-    String detailsUrl;
-
-    Boolean active;
 }

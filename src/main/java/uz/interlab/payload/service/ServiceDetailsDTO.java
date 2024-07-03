@@ -1,18 +1,18 @@
-package uz.interlab.payload;
+package uz.interlab.payload.service;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.Service;
+import uz.interlab.entity.service.ServiceDetails;
 import uz.interlab.exception.LanguageNotSupportException;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ServiceDTO
+public class ServiceDetailsDTO
 {
     Long id;
 
@@ -20,34 +20,33 @@ public class ServiceDTO
 
     String description;
 
-    String iconUrl;
+    String text;
 
-    String detailsUrl;
+    String photoUrl;
 
-    Boolean active;
-
-    public ServiceDTO(Service entity, String lang)
+    public ServiceDetailsDTO(ServiceDetails entity, String lang)
     {
         this.id = entity.getId();
-        this.iconUrl = entity.getIconUrl();
-        this.detailsUrl = entity.getDetailsUrl();
-        this.active = entity.getActive();
+        this.photoUrl = entity.getPhotoUrl();
+
         switch (lang.toLowerCase())
         {
             case "uz":
             {
                 this.name = entity.getNameUz();
                 this.description = entity.getDescriptionUz();
+                this.text = entity.getTextUz();
                 break;
             }
             case "ru":
             {
                 this.name = entity.getNameRu();
                 this.description = entity.getDescriptionRu();
+                this.text = entity.getTextRu();
                 break;
             }
             default:
-                throw new LanguageNotSupportException("Language not supported: " + lang);
+                throw new LanguageNotSupportException("Language not supported :" + lang);
         }
     }
 }

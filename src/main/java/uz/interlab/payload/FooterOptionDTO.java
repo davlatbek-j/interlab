@@ -1,44 +1,37 @@
 package uz.interlab.payload;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.Doctor;
+import uz.interlab.entity.footer.FooterOption;
 import uz.interlab.exception.LanguageNotSupportException;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DoctorDTO
+public class FooterOptionDTO
 {
     Long id;
+    String name;
+    String url;
 
-    String fullName;
-
-    String speciality;
-
-    String photoUrl;
-
-    Boolean active;
-
-    public DoctorDTO(Doctor entity, String lang)
+    public FooterOptionDTO(FooterOption entity, String lang)
     {
         this.id = entity.getId();
-        this.photoUrl = entity.getPhotoUrl();
-        this.active = entity.getActive();
+        this.url = entity.getUrl();
         switch (lang.toLowerCase())
         {
             case "uz":
             {
-                this.fullName = entity.getFullNameUz();
-                this.speciality = entity.getSpecialityUz();
+                this.name = entity.getNameUz();
                 break;
             }
             case "ru":
             {
-                this.fullName = entity.getFullNameRu();
-                this.speciality = entity.getSpecialityRu();
+                this.name = entity.getNameRu();
                 break;
             }
             default:

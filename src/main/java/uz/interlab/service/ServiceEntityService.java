@@ -6,10 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import uz.interlab.entity.Service;
-import uz.interlab.entity.ServiceDetails;
+import uz.interlab.entity.service.Service;
 import uz.interlab.payload.ApiResponse;
-import uz.interlab.payload.ServiceDTO;
+import uz.interlab.payload.service.ServiceDTO;
 import uz.interlab.respository.ServiceDetailsRepository;
 import uz.interlab.respository.ServiceRepository;
 

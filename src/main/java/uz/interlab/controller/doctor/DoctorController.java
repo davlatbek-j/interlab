@@ -1,13 +1,13 @@
-package uz.interlab.controller;
+package uz.interlab.controller.doctor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import uz.interlab.entity.Doctor;
+import uz.interlab.entity.doctor.Doctor;
 import uz.interlab.payload.ApiResponse;
-import uz.interlab.payload.DoctorDTO;
+import uz.interlab.payload.doctor.DoctorDTO;
 import uz.interlab.service.DoctorService;
 
 import java.util.List;

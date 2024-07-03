@@ -1,13 +1,13 @@
-package uz.interlab.controller;
+package uz.interlab.controller.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import uz.interlab.entity.ServiceDetails;
+import uz.interlab.entity.service.ServiceDetails;
 import uz.interlab.payload.ApiResponse;
-import uz.interlab.payload.ServiceDetailsDTO;
+import uz.interlab.payload.service.ServiceDetailsDTO;
 import uz.interlab.service.DetailsService;
 
 @RequiredArgsConstructor
@@ -27,18 +27,18 @@ public class ServiceDetailsController
         return detailsService.createDetails(serviceId, jsonDetails, photo);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/get/{service-id}")
     public ResponseEntity<ApiResponse<ServiceDetailsDTO>> getServiceDetails(
-            @PathVariable Long id,
+            @PathVariable(name = "service-id") Long serviceId,
             @RequestHeader(value = "Accept-Language") String lang)
     {
-        return detailsService.findById(id,lang);
+        return detailsService.findByServiceId(serviceId,lang);
     }
 
     @GetMapping("/get-full-data/{id}")
     public ResponseEntity<ApiResponse<ServiceDetails>> findById(@PathVariable Long id)
     {
-        return detailsService.findById(id);
+        return detailsService.findByServiceId(id);
     }
 
     @PutMapping("/update/{id}")

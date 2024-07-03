@@ -7,11 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import uz.interlab.entity.ServiceDetails;
+import uz.interlab.entity.service.ServiceDetails;
 import uz.interlab.payload.ApiResponse;
-import uz.interlab.payload.ServiceDetailsDTO;
+import uz.interlab.payload.service.ServiceDetailsDTO;
 import uz.interlab.respository.DetailsRepository;
 import uz.interlab.respository.ServiceRepository;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 
@@ -40,7 +42,7 @@ public class DetailsService
 
             ServiceDetails save = detailsRepo.save(serviceDetails);
 
-            serviceRepo.updateDetailsId(serviceId, "https://localhost:8100/service-details/get/" + save.getId());
+            serviceRepo.updateDetailsId(serviceId, save.getId());
 
             response.setMessage("Created");
             response.setData(save);
@@ -54,17 +56,26 @@ public class DetailsService
         }
     }
 
-    public ResponseEntity<ApiResponse<ServiceDetailsDTO>> findById(Long id, String lang)
+    public ResponseEntity<ApiResponse<ServiceDetailsDTO>> findByServiceId(Long serviceId, String lang)
     {
         ApiResponse<ServiceDetailsDTO> response = new ApiResponse<>();
-        if (!detailsRepo.existsById(id))
+        if (!serviceRepo.existsById(serviceId))
         {
-            response.setMessage("Service not found by id:" + id);
+            response.setMessage("Service not found by id:" + serviceId);
             return ResponseEntity.status(404).body(response);
         }
-        ServiceDetails serviceDetails = detailsRepo.findById(id).get();
+        Long detailsId = serviceRepo.findDetailsIdByServiceId(serviceId);
+
+        Optional<ServiceDetails> serviceDetails = detailsRepo.findById(detailsId);
+        if (serviceDetails.isEmpty())
+        {
+            response.setMessage("Service details is null");
+            return ResponseEntity.status(200).body(response);
+        }
+
         response.setMessage("Found");
-        response.setData(new ServiceDetailsDTO(serviceDetails, lang));
+        serviceDetails.ifPresent(details -> response.setData(new ServiceDetailsDTO(details, lang)));
+
         return ResponseEntity.status(200).body(response);
     }
 
@@ -121,7 +132,7 @@ public class DetailsService
         return ResponseEntity.status(200).body(response);
     }
 
-    public ResponseEntity<ApiResponse<ServiceDetails>> findById(Long id)
+    public ResponseEntity<ApiResponse<ServiceDetails>> findByServiceId(Long id)
     {
         ApiResponse<ServiceDetails> response = new ApiResponse<>();
         if (!detailsRepo.existsById(id))

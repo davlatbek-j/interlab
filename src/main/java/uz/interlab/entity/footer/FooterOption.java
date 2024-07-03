@@ -1,18 +1,21 @@
-package uz.interlab.entity;
+package uz.interlab.entity.footer;
+
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-@Table(name = "service_details")
-public class ServiceDetails
+@Table(name = "footer_option_value")
+public class FooterOption
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,14 +24,5 @@ public class ServiceDetails
     String nameUz;
     String nameRu;
 
-    String descriptionUz;
-    String descriptionRu;
-
-    @Column(length = 2000)
-    String textUz;
-
-    @Column(length = 2000)
-    String textRu;
-
-    String photoUrl;
+    String url;
 }

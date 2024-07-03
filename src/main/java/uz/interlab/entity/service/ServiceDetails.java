@@ -1,4 +1,4 @@
-package uz.interlab.entity;
+package uz.interlab.entity.service;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,20 +11,24 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-@Table(name = "doctor")
-public class Doctor
+@Table(name = "service_details")
+public class ServiceDetails
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String fullNameUz;
-    String fullNameRu;
+    String nameUz;
+    String nameRu;
 
-    String specialityUz;
-    String specialityRu;
+    String descriptionUz;
+    String descriptionRu;
+
+    @Column(length = 2000)
+    String textUz;
+
+    @Column(length = 2000)
+    String textRu;
 
     String photoUrl;
-
-    Boolean active;
 }
