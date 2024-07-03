@@ -20,7 +20,8 @@ public class Instruction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String name;
+    String nameUz;
+    String nameRu;
 
     @OneToMany(cascade = CascadeType.ALL)
     List<InstructionOption> option;
