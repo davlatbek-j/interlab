@@ -2,7 +2,7 @@ package uz.interlab.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -11,10 +11,11 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity(name = "links")
-public class Link {
 
+@Entity(name = "instruction")
+public class Instruction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -23,6 +24,8 @@ public class Link {
 
     String nameRu;
 
-    String url;
+    boolean active;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    List<InstructionOption> options;
 }

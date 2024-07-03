@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import uz.interlab.entity.Newness;
+import uz.interlab.entity.news.Newness;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.NewnessDTO;
 import uz.interlab.service.NewnessService;

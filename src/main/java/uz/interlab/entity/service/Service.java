@@ -1,44 +1,37 @@
-package uz.interlab.entity;
+package uz.interlab.entity.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity(name = "newness")
-public class Newness {
 
+@Entity
+@Table(name = "service")
+public class Service
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String titleUz;
+    String nameUz;
 
-    String titleRu;
+    String nameRu;
 
-    @Column(length = 1000)
     String descriptionUz;
 
-    @Column(length = 1000)
     String descriptionRu;
 
-    @Column(length = 5000)
-    String bodyUz;
+    String iconUrl;
 
-    @Column(length = 5000)
-    String bodyRu;
-
-    String photoUrl;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    ServiceDetails details;
 
     boolean active;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    List<Link> links;
-
 }

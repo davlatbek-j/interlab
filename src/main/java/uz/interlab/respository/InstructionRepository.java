@@ -5,16 +5,13 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import uz.interlab.entity.news.Newness;
+import uz.interlab.entity.Instruction;
 
 @Repository
-public interface NewNessRepository extends JpaRepository<Newness, Long> {
-
-    @Query(value = "select photo_url from newness where id=:id", nativeQuery = true)
-    String findPhotoUrlById(@Param("id")Long id);
+public interface InstructionRepository extends JpaRepository<Instruction,Long> {
 
     @Modifying
-    @Query(value = "update newness set active=:active where id=:id", nativeQuery = true)
+    @Query(value = "update instruction set active=:active where id=:id", nativeQuery = true)
     void changeActive(@Param("id")Long id, boolean active);
 
 }
