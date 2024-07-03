@@ -8,19 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import uz.interlab.entity.Doctor;
-import uz.interlab.entity.Instruction;
-import uz.interlab.entity.InstructionOption;
 import uz.interlab.entity.Photo;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.DoctorDTO;
-import uz.interlab.payload.InstructionDto;
-import uz.interlab.payload.InstructionOptionDto;
 import uz.interlab.respository.DoctorRepository;
-import uz.interlab.respository.InstructionRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -31,7 +25,6 @@ public class DoctorService
     private final DoctorRepository doctorRepo;
     private final PhotoService photoService;
     private final ObjectMapper jsonMapper;
-
 
     public ResponseEntity<ApiResponse<Doctor>> create(String strDoctor, MultipartFile photoFile)
     {
@@ -141,7 +134,4 @@ public class DoctorService
         doctorRepo.deleteById(id);
         return ResponseEntity.status(200).body(response);
     }
-
-
-
 }

@@ -1,6 +1,9 @@
-package uz.interlab.entity;
+package uz.interlab.entity.doctor;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,18 +14,13 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-@Table(name = "doctor")
-public class Doctor
+public class Education
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String fullNameUz;
-    String fullNameRu;
+    String nameUz;
 
-    String specialityUz;
-    String specialityRu;
-
-    String photoUrl;
+    String nameRu;
 }
