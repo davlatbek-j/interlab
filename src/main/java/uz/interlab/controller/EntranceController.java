@@ -41,7 +41,7 @@ public class EntranceController {
         return entranceService.findAll(lang);
     }
 
-    @GetMapping("get-full-data/{id}")
+    @GetMapping("/get-full-data/{id}")
     public ResponseEntity<ApiResponse<Entrance>> getFullData(@PathVariable Long id) {
         return entranceService.findById(id);
     }
@@ -56,9 +56,10 @@ public class EntranceController {
     }
 
     @PutMapping("/change-active/{id}")
-    public ResponseEntity<ApiResponse<?>> changeActive(@PathVariable Long id){
+    public ResponseEntity<ApiResponse<?>> changeActive(@PathVariable Long id) {
         return entranceService.changeActive(id);
     }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<?>> deleteEntrance(@PathVariable Long id) {
         return entranceService.deleteById(id);

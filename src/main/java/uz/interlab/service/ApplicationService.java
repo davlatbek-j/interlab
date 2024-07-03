@@ -27,10 +27,10 @@ public class ApplicationService {
 
     }
 
-    public ResponseEntity<ApiResponse<Application>> findById(Long id){
-        ApiResponse<Application> response=new ApiResponse<>();
-        if (applicationRepository.findById(id).isEmpty()){
-            response.setMessage("Application not found by id: "+id);
+    public ResponseEntity<ApiResponse<Application>> findById(Long id) {
+        ApiResponse<Application> response = new ApiResponse<>();
+        if (applicationRepository.findById(id).isEmpty()) {
+            response.setMessage("Application not found by id: " + id);
             return ResponseEntity.status(404).body(response);
         }
         Application application = applicationRepository.findById(id).get();
@@ -39,19 +39,19 @@ public class ApplicationService {
         return ResponseEntity.status(200).body(response);
     }
 
-    public ResponseEntity<ApiResponse<List<Application>>> findAll(){
-        ApiResponse<List<Application>> response=new ApiResponse<>();
+    public ResponseEntity<ApiResponse<List<Application>>> findAll() {
+        ApiResponse<List<Application>> response = new ApiResponse<>();
         List<Application> all = applicationRepository.findAll();
         response.setData(new ArrayList<>());
         all.forEach(application -> response.getData().add(application));
-        response.setMessage("Found "+all.size()+" application(s)");
+        response.setMessage("Found " + all.size() + " application(s)");
         return ResponseEntity.status(200).body(response);
     }
 
-    public ResponseEntity<ApiResponse<Application>> update(Long id, ApplicationCreateDTO createDTO){
-        ApiResponse<Application> response=new ApiResponse<>();
-        if (applicationRepository.findById(id).isEmpty()){
-            response.setMessage("Application not found by id: "+id);
+    public ResponseEntity<ApiResponse<Application>> update(Long id, ApplicationCreateDTO createDTO) {
+        ApiResponse<Application> response = new ApiResponse<>();
+        if (applicationRepository.findById(id).isEmpty()) {
+            response.setMessage("Application not found by id: " + id);
             return ResponseEntity.status(404).body(response);
         }
         Application application = applicationRepository.findById(id).get();
@@ -64,10 +64,10 @@ public class ApplicationService {
         return ResponseEntity.status(201).body(response);
     }
 
-    public ResponseEntity<ApiResponse<?>> deleteById(Long id){
-        ApiResponse<?> response=new ApiResponse<>();
-        if (applicationRepository.findById(id).isEmpty()){
-            response.setMessage("Applicatiob not found by id: "+id);
+    public ResponseEntity<ApiResponse<?>> deleteById(Long id) {
+        ApiResponse<?> response = new ApiResponse<>();
+        if (applicationRepository.findById(id).isEmpty()) {
+            response.setMessage("Applicatiob not found by id: " + id);
             return ResponseEntity.status(404).body(response);
         }
         applicationRepository.deleteById(id);

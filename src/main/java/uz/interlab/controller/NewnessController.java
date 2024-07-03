@@ -56,9 +56,10 @@ public class NewnessController {
     }
 
     @PutMapping("/change-active/{id}")
-    public ResponseEntity<ApiResponse<?>> changeActive(@PathVariable Long id){
+    public ResponseEntity<ApiResponse<?>> changeActive(@PathVariable Long id) {
         return newnessService.changeActive(id);
     }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<?>> deleteNewness(@PathVariable Long id) {
         return newnessService.deleteById(id);
