@@ -14,15 +14,18 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
-@Entity
+@Entity(name = "instruction")
 public class Instruction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     String nameUz;
+
     String nameRu;
 
+    boolean active;
+
     @OneToMany(cascade = CascadeType.ALL)
-    List<InstructionOption> option;
+    List<InstructionOption> options;
 }

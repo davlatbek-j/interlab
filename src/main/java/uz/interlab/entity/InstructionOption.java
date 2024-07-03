@@ -23,5 +23,5 @@ public class InstructionOption {
 
     String descriptionUz;
 
-    String descriptionRU;
+    String descriptionRu;
 }

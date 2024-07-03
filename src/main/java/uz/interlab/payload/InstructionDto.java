@@ -10,6 +10,8 @@ import uz.interlab.entity.Photo;
 import uz.interlab.exception.LanguageNotSupportException;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -18,12 +20,28 @@ public class InstructionDto {
 
     String name;
 
-    List<InstructionOption> option;
+    boolean active;
 
-    public InstructionDto(Instruction entity)
-    {
-        this.id = entity.getId();
-        this.name = entity.getName();
-        this.option = entity.getOption();
+    List<InstructionOptionDto> options;
+
+    public InstructionDto(Instruction instruction, String lang) {
+        this.id = instruction.getId();
+        switch (lang.toLowerCase()) {
+
+            case "uz": {
+                this.name = instruction.getNameUz();
+                break;
+            }
+            case "ru": {
+                this.name=instruction.getNameRu();
+                break;
+            }
+            default:
+                throw new LanguageNotSupportException("Language not supported: "+lang);
+        }
+
+        this.options=instruction.getOptions().stream()
+                .map(option -> new InstructionOptionDto(option,lang))
+                .collect(Collectors.toList());
     }
 }
