@@ -21,8 +21,10 @@ public class Entrance {
 
     String titleRu;
 
+    @Column(length = 1000)
     String descriptionUz;
 
+    @Column(length = 1000)
     String descriptionRu;
 
     boolean active;
