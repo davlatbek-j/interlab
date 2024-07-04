@@ -36,7 +36,7 @@ public class LinkDTO {
             }
 
             default:
-                throw new LanguageNotSupportException("Language not supported" + lang);
+                throw new LanguageNotSupportException("Language not supported: " + lang);
 
         }
     }

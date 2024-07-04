@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import uz.interlab.controller.service.ServiceDetailsController;
 import uz.interlab.entity.doctor.DoctorDetails;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.doctor.DoctorDetailsDTO;
