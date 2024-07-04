@@ -12,7 +12,6 @@ import uz.interlab.service.InstructionService;
 import java.util.List;
 
 @RequiredArgsConstructor
-
 @Controller
 @RequestMapping("/instruction")
 public class InstructionController {
