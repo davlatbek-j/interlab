@@ -46,8 +46,14 @@ public class DoctorDetailsService
             return ResponseEntity.status(404).body(response);
         }
         Long detailsId = doctorRepo.findDetailsId(doctorId);
+        if (detailsId == null)
+        {
+            response.setMessage("Doctor details is null");
+            return ResponseEntity.status(200).body(response);
+        }
+
         DoctorDetails doctorDetails = detailsRepo.findById(detailsId).get();
-        response.setMessage("Fund");
+        response.setMessage("Found");
         response.setData(new DoctorDetailsDTO(doctorDetails, lang));
         return ResponseEntity.ok(response);
     }
