@@ -27,33 +27,35 @@ public class ServiceDetailsController
         return detailsService.createDetails(serviceId, jsonDetails, photo);
     }
 
-    @GetMapping("/get/{service-id}")
+    @GetMapping("/get")
     public ResponseEntity<ApiResponse<ServiceDetailsDTO>> getServiceDetails(
-            @PathVariable(name = "service-id") Long serviceId,
-            @RequestHeader(value = "Accept-Language") String lang)
+            @RequestParam(name = "service-id") Long serviceId,
+            @RequestParam(value = "lang") String lang)
     {
-        return detailsService.findByServiceId(serviceId,lang);
+        System.err.println("serviceId = " + serviceId);
+        return detailsService.findByServiceId(serviceId, lang);
     }
 
-    @GetMapping("/get-full-data/{id}")
-    public ResponseEntity<ApiResponse<ServiceDetails>> findById(@PathVariable Long id)
+    @GetMapping("/get-full-data/{service-id}")
+    public ResponseEntity<ApiResponse<ServiceDetails>> findById(
+            @PathVariable(value = "service-id") Long serviceId)
     {
-        return detailsService.findByServiceId(id);
+        return detailsService.findByServiceId(serviceId);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{service-id}")
     public ResponseEntity<ApiResponse<ServiceDetails>> update(
-            @PathVariable Long id,
-            @RequestParam(value = "json") String newJson,
-            @RequestPart(value = "photo") MultipartFile newPhoto)
+            @PathVariable(value = "service-id") Long serviceId,
+            @RequestParam(value = "json", required = false) String newJson,
+            @RequestPart(value = "photo", required = false) MultipartFile newPhoto)
     {
-        return detailsService.update(id,newJson,newPhoto);
+        return detailsService.update(serviceId, newJson, newPhoto);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse<?>> delete(@PathVariable Long id)
+    @DeleteMapping("/delete/{service-id}")
+    public ResponseEntity<ApiResponse<?>> delete(@PathVariable(value = "service-id") Long serviceId)
     {
-        return detailsService.deleteById(id);
+        return detailsService.delete(serviceId);
     }
 
 }
