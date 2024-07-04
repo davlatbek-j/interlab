@@ -25,25 +25,25 @@ public class DoctorDetailsController
         return detailsService.create(doctorId, details);
     }
 
-    @GetMapping("/get/{doctor-id}")
+    @GetMapping("/get")
     public ResponseEntity<ApiResponse<DoctorDetailsDTO>> getByDoctorId(
-            @PathVariable("doctor-id") Long doctorId,
-            @RequestHeader("Accept-Language") String lang)
+            @RequestParam("doctor-id") Long doctorId,
+            @RequestParam("lang") String lang)
     {
-        return detailsService.findByDoctorId(doctorId,lang);
+        return detailsService.findByDoctorId(doctorId, lang);
     }
 
-    /*@PutMapping("/update/{doctor-id}")
+    @PutMapping("/update/{doctor-id}")
     public ResponseEntity<ApiResponse<DoctorDetails>> update(
             @PathVariable("doctor-id") Long doctorId,
-            @RequestBody DoctorDetails doctorDetails )
+            @RequestBody DoctorDetails doctorDetails)
     {
-        return detailsService.update(doctorId,doctorDetails);
+        return detailsService.update(doctorId, doctorDetails);
     }
 
     @DeleteMapping("/delete/{doctor-id}")
     public ResponseEntity<ApiResponse<?>> delete(@PathVariable("doctor-id") Long doctorId)
     {
         return detailsService.delete(doctorId);
-    }*/
+    }
 }

@@ -67,6 +67,12 @@ public class DetailsService
         }
         Long detailsId = serviceRepo.findDetailsIdByServiceId(serviceId);
 
+        if (detailsId == null)
+        {
+            response.setMessage("Service details is null");
+            return ResponseEntity.status(200).body(response);
+        }
+
         Optional<ServiceDetails> serviceDetails = detailsRepo.findById(detailsId);
         if (serviceDetails.isEmpty())
         {
@@ -80,16 +86,16 @@ public class DetailsService
         return ResponseEntity.status(200).body(response);
     }
 
-    public ResponseEntity<ApiResponse<ServiceDetails>> update(Long id, String newJson, MultipartFile newPhoto)
+    public ResponseEntity<ApiResponse<ServiceDetails>> update(Long serviceId, String newJson, MultipartFile newPhoto)
     {
         ApiResponse<ServiceDetails> response = new ApiResponse<>();
-        if (!detailsRepo.existsById(id))
+        if (!detailsRepo.existsById(serviceId))
         {
-            response.setMessage("Service not found by id:" + id);
+            response.setMessage("Service not found by id:" + serviceId);
             return ResponseEntity.status(404).body(response);
         }
-
-        String oldPhotoUrl = detailsRepo.findById(id).get().getPhotoUrl();
+        Long detailsId = serviceRepo.findDetailsIdByServiceId(serviceId);
+        String oldPhotoUrl = detailsRepo.findById(detailsId).get().getPhotoUrl();
         ServiceDetails newDetails = new ServiceDetails();
 
         try
@@ -99,9 +105,9 @@ public class DetailsService
                 newDetails = jsonMapper.readValue(newJson, ServiceDetails.class);
                 if (newPhoto == null || !(newPhoto.getSize() > 0))
                     newDetails.setPhotoUrl(oldPhotoUrl);
-                newDetails.setId(id);
+                newDetails.setId(detailsId);
             } else
-                newDetails = detailsRepo.findById(id).get();
+                newDetails = detailsRepo.findById(detailsId).get();
 
             if (newPhoto != null && newPhoto.getSize() > 0)
             {
@@ -120,28 +126,37 @@ public class DetailsService
 
     }
 
-    public ResponseEntity<ApiResponse<?>> deleteById(Long id)
+    public ResponseEntity<ApiResponse<?>> delete(Long serviceId)
     {
         ApiResponse<?> response = new ApiResponse<>();
-        if (!detailsRepo.existsById(id))
+        Long detailsId = serviceRepo.findDetailsIdByServiceId(serviceId);
+        if (!detailsRepo.existsById(detailsId))
         {
-            response.setMessage("Service not found by id:" + id);
+            response.setMessage("Service not found by id:" + serviceId);
             return ResponseEntity.status(404).body(response);
         }
-        detailsRepo.deleteById(id);
+        serviceRepo.updateDetailsId(serviceId, null);
+        detailsRepo.deleteById(detailsId);
         response.setMessage("Deleted successfully");
         return ResponseEntity.status(200).body(response);
     }
 
-    public ResponseEntity<ApiResponse<ServiceDetails>> findByServiceId(Long id)
+    public ResponseEntity<ApiResponse<ServiceDetails>> findByServiceId(Long serviceId)
     {
         ApiResponse<ServiceDetails> response = new ApiResponse<>();
-        if (!detailsRepo.existsById(id))
+        Long detailsId = serviceRepo.findDetailsIdByServiceId(serviceId);
+        if (detailsId == null)
         {
-            response.setMessage("Service not found by id:" + id);
+            response.setMessage("Service details is null");
+            return ResponseEntity.status(200).body(response);
+        }
+
+        if (!detailsRepo.existsById(detailsId))
+        {
+            response.setMessage("Service details not found by id:" + serviceId);
             return ResponseEntity.status(404).body(response);
         }
-        ServiceDetails serviceDetails = detailsRepo.findById(id).get();
+        ServiceDetails serviceDetails = detailsRepo.findById(serviceId).get();
         response.setMessage("Found");
         response.setData(serviceDetails);
         return ResponseEntity.status(200).body(response);
