@@ -32,7 +32,7 @@ public class BlogDTO {
     public BlogDTO(Blog blog, String lang) {
         this.id = blog.getId();
         this.photoUrl = blog.getPhotoUrl();
-
+        this.active=blog.isActive();
         switch (lang.toLowerCase()) {
 
             case "uz": {

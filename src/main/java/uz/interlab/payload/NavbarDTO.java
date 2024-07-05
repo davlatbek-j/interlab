@@ -22,7 +22,7 @@ public class NavbarDTO {
 
     public NavbarDTO(Navbar navbar, String lang) {
         this.id = navbar.getId();
-
+        this.active=navbar.isActive();
         this.navbarOptions = navbar.getNavbarOptions().stream()
                 .map(option -> new NavbarOptionDTO(option, lang))
                 .collect(Collectors.toList());
