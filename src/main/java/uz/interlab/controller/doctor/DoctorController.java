@@ -10,7 +10,6 @@ import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.doctor.DoctorDTO;
 import uz.interlab.service.doctor.DoctorService;
 
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -39,9 +38,11 @@ public class DoctorController
 
     @GetMapping("/get-all")
     ResponseEntity<ApiResponse<List<DoctorDTO>>> getAll(
+            @RequestParam(value = "main", defaultValue = "all", required = false) String main,
+            @RequestParam(value = "active", defaultValue = "all", required = false) String active,
             @RequestHeader(value = "Accept-Language") String lang)
     {
-        return doctorService.findAll(lang);
+        return doctorService.findAll(lang, main, active);
     }
 
     @GetMapping("get-full-data/{id}")
@@ -56,7 +57,7 @@ public class DoctorController
             @RequestParam(value = "json", required = false) String json,
             @RequestPart(value = "photo", required = false) MultipartFile photo)
     {
-        return doctorService.update(id,json,photo);
+        return doctorService.update(id, json, photo);
     }
 
     @DeleteMapping("/delete/{id}")

@@ -13,7 +13,8 @@ import uz.interlab.payload.ApiResponse;
 public class GlobalExceptionHandler
 {
     @ExceptionHandler(IllegalPhotoTypeException.class)
-    public ResponseEntity<ApiResponse<?>> handlePhotoTypeException(IllegalPhotoTypeException ex) {
+    public ResponseEntity<ApiResponse<?>> handlePhotoTypeException(IllegalPhotoTypeException ex)
+    {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>("Illegal photo: " + ex.getMessage(), null));
     }
 
@@ -25,6 +26,12 @@ public class GlobalExceptionHandler
 
     @ExceptionHandler(PhotoNotFoundExcpetion.class)
     public ResponseEntity<ApiResponse<?>> handlePhotoNotFoundException(PhotoNotFoundExcpetion ex)
+    {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(ex.getMessage(), null));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<?>> handleIllegalArgumentException(IllegalArgumentException ex)
     {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(ex.getMessage(), null));
     }

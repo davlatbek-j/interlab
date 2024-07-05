@@ -27,9 +27,11 @@ public class Doctor
 
     String photoUrl;
 
+    boolean main;
+
+    boolean active;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     DoctorDetails details;
-
-    boolean active;
 }

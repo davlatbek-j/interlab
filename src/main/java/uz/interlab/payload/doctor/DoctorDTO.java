@@ -20,17 +20,16 @@ public class DoctorDTO
 
     String photoUrl;
 
-    boolean active;
+    boolean main;
 
-    String detailsUrl;
+    boolean active;
 
     public DoctorDTO(Doctor entity, String lang)
     {
         this.id = entity.getId();
         this.photoUrl = entity.getPhotoUrl();
+        this.main = entity.isMain();
         this.active = entity.isActive();
-        if (entity.getDetails() != null)
-            this.detailsUrl = "http://localhost:8100/doctor-details/get?doctor-id=" + entity.getId() + "&lang=" + lang;
 
         switch (lang.toLowerCase())
         {
