@@ -63,13 +63,45 @@ public class DoctorService
         return ResponseEntity.status(200).body(response);
     }
 
-    public ResponseEntity<ApiResponse<List<DoctorDTO>>> findAll(String lang)
+    public ResponseEntity<ApiResponse<List<DoctorDTO>>> findAll(String lang, String main, String active)
     {
         ApiResponse<List<DoctorDTO>> response = new ApiResponse<>();
-        List<Doctor> all = doctorRepo.findAll();
+        List<Doctor> all = new ArrayList<>();
         response.setData(new ArrayList<>());
-        all.forEach(i -> response.getData().add(new DoctorDTO(i, lang)));
-        response.setMessage("Found " + all.size() + " doctor(s)");
+
+        switch (main.toLowerCase())
+        {
+            case "all":
+            {
+                if (active.equalsIgnoreCase("all"))
+                    all = doctorRepo.findAll();
+                else if (active.equalsIgnoreCase("true") || active.equalsIgnoreCase("false"))
+                    all = doctorRepo.findByActive(Boolean.parseBoolean(active));
+                else
+                    throw new IllegalArgumentException("'active' should be either 'all' or 'true' or 'false'");
+
+                all.forEach(i -> response.getData().add(new DoctorDTO(i, lang)));
+                response.setMessage("Found " + all.size() + " doctor(s)");
+                break;
+            }
+            case "true":
+            case "false":
+            {
+                if (active.equalsIgnoreCase("all"))
+                    all = doctorRepo.findByMain(Boolean.parseBoolean(main));
+                else if (active.equalsIgnoreCase("true") || active.equalsIgnoreCase("false"))
+                    all = doctorRepo.findByMainAndActive(Boolean.parseBoolean(main), Boolean.parseBoolean(active));
+                else
+                    throw new IllegalArgumentException("'active' should be either 'all' or 'true' or 'false'");
+
+                all.forEach(i -> response.getData().add(new DoctorDTO(i, lang)));
+                response.setMessage("Found " + response.getData().size() + " doctor(s)");
+                break;
+            }
+            default:
+                throw new IllegalArgumentException("'main' should be either 'all' or 'true' or 'false'");
+        }
+
         return ResponseEntity.status(200).body(response);
     }
 

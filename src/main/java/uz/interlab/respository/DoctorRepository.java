@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import uz.interlab.entity.doctor.Doctor;
 
+import java.util.List;
+
 public interface DoctorRepository extends JpaRepository<Doctor, Long>
 {
     @Query(value = "SELECT photo_url from doctor where id = :id", nativeQuery = true)
@@ -19,4 +21,10 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long>
 
     @Query(value = "SELECT details_id FROM doctor WHERE id =:doctorId", nativeQuery = true)
     Long findDetailsId(@Param("doctorId") Long doctorId);
+
+    List<Doctor> findByMain(boolean main);
+
+    List<Doctor> findByMainAndActive(boolean main, boolean active);
+
+    List<Doctor> findByActive(boolean active);
 }
