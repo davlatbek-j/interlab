@@ -47,6 +47,7 @@ public class DoctorDTO
             {
                 this.fullName = entity.getFullNameRu();
                 this.speciality = entity.getSpecialityRu();
+                this.speciality.addAll(entity.getSpecialityRu());
                 break;
             }
             default:
