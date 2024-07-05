@@ -2,10 +2,10 @@ package uz.interlab.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import uz.interlab.entity.Banner;
 import uz.interlab.entity.Photo;
@@ -15,7 +15,6 @@ import uz.interlab.respository.BannerRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -98,7 +97,6 @@ public class BannerService {
             } else {
                 newBanner = bannerRepository.findById(id).get();
             }
-
             if (newPhoto != null && newPhoto.getSize() > 0) {
                 Photo photo = photoService.save(newPhoto);
                 newBanner.setPhotoUrl(photo.getHttpUrl());
@@ -116,10 +114,10 @@ public class BannerService {
         ApiResponse<?> response = new ApiResponse<>();
         if (bannerRepository.findById(id).isEmpty()) {
             response.setMessage("Banner not found by id: " + id);
-            return ResponseEntity.status(401).body(response);
+            return ResponseEntity.status(404).body(response);
         }
-        bannerRepository.deleteById(id);
         response.setMessage("Successfully deleted");
+        bannerRepository.deleteById(id);
         return ResponseEntity.status(200).body(response);
     }
 
@@ -127,38 +125,12 @@ public class BannerService {
         ApiResponse<?> response = new ApiResponse<>();
         if (bannerRepository.findById(id).isEmpty()) {
             response.setMessage("Banner not found by id: " + id);
-            return ResponseEntity.status(401).body(response);
+            return ResponseEntity.status(404).body(response);
         }
         Banner banner = bannerRepository.findById(id).get();
         boolean active = !banner.isActive();
         bannerRepository.changeActive(id, active);
         response.setMessage("Successfully changed! Banner active: " + active);
-        return ResponseEntity.status(200).body(response);
-    }
-
-    public ResponseEntity<ApiResponse<BannerDTO>> getBanner(String lang) {
-        ApiResponse<BannerDTO> response = new ApiResponse<>();
-        Optional<Banner> optionalBanner = bannerRepository.findTopByOrderByIdDesc();
-        if (optionalBanner.isEmpty()) {
-            response.setMessage("No banner found");
-            return ResponseEntity.status(401).body(response);
-        }
-        Banner banner = optionalBanner.get();
-        response.setData(new BannerDTO(banner, lang));
-        response.setMessage("Found");
-        return ResponseEntity.status(200).body(response);
-    }
-
-    public ResponseEntity<ApiResponse<Banner>> getBanner() {
-        ApiResponse<Banner> response = new ApiResponse<>();
-        Optional<Banner> optionalBanner = bannerRepository.findTopByOrderByIdDesc();
-        if (optionalBanner.isEmpty()) {
-            response.setMessage("No banner found");
-            return ResponseEntity.status(401).body(response);
-        }
-        Banner banner = optionalBanner.get();
-        response.setData(banner);
-        response.setMessage("Found");
         return ResponseEntity.status(200).body(response);
     }
 

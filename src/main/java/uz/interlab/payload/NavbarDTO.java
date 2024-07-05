@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.menuBanner.MenuBanner;
+import uz.interlab.entity.navbar.Navbar;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,19 +12,19 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MenuBannerDTO {
+public class NavbarDTO {
 
     Long id;
 
     boolean active;
 
-    List<MenuBannerOptionDTO> menuOption;
+    List<NavbarOptionDTO> navbarOptions;
 
-    public MenuBannerDTO(MenuBanner menuBanner, String lang) {
-        this.id = menuBanner.getId();
+    public NavbarDTO(Navbar navbar, String lang) {
+        this.id = navbar.getId();
 
-        this.menuOption = menuBanner.getMenuOption().stream()
-                .map(option -> new MenuBannerOptionDTO(option, lang))
+        this.navbarOptions = navbar.getNavbarOptions().stream()
+                .map(option -> new NavbarOptionDTO(option, lang))
                 .collect(Collectors.toList());
     }
 

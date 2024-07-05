@@ -26,37 +26,6 @@ public class BannerController {
         return bannerService.create(banner, photo);
     }
 
-    @GetMapping("/get-banner")
-    public ResponseEntity<ApiResponse<BannerDTO>> getBanner(
-            @RequestHeader(value = "Accept-Language") String lang
-    ) {
-        return bannerService.getBanner(lang);
-    }
-
-    @GetMapping("/get-banner-full-data")
-    public ResponseEntity<ApiResponse<Banner>> getBannerFullData() {
-        return bannerService.getBanner();
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse<Banner>> updateBanner(
-            @PathVariable Long id,
-            @RequestParam(value = "json", required = false) String json,
-            @RequestPart(value = "photo", required = false) MultipartFile photo
-    ) {
-        return bannerService.update(id, json, photo);
-    }
-
-    @PutMapping("/change-active/{id}")
-    public ResponseEntity<ApiResponse<?>> changeActive(@PathVariable Long id) {
-        return bannerService.changeActive(id);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse<?>> deleteBanner(@PathVariable Long id) {
-        return bannerService.deleteById(id);
-    }
-
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<BannerDTO>> getById(
             @PathVariable Long id,
@@ -77,5 +46,23 @@ public class BannerController {
         return bannerService.findById(id);
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ApiResponse<Banner>> updateBanner(
+            @PathVariable Long id,
+            @RequestParam(value = "json", required = false) String json,
+            @RequestPart(value = "photo", required = false) MultipartFile photo
+    ) {
+        return bannerService.update(id, json, photo);
+    }
+
+    @PutMapping("/change-active/{id}")
+    public ResponseEntity<ApiResponse<?>> changeActive(@PathVariable Long id) {
+        return bannerService.changeActive(id);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse<?>> deleteBanner(@PathVariable Long id) {
+        return bannerService.deleteById(id);
+    }
 
 }

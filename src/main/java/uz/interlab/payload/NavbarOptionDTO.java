@@ -4,13 +4,13 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.menuBanner.MenuBannerOption;
+import uz.interlab.entity.navbar.NavbarOption;
 import uz.interlab.exception.LanguageNotSupportException;
 
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class MenuBannerOptionDTO {
+public class NavbarOptionDTO {
 
     Long id;
 
@@ -18,7 +18,7 @@ public class MenuBannerOptionDTO {
 
     String url;
 
-    public MenuBannerOptionDTO(MenuBannerOption option, String lang){
+    public NavbarOptionDTO(NavbarOption option, String lang){
         this.id= option.getId();
         this.url= option.getUrl();
         switch (lang.toLowerCase()){

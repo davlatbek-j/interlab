@@ -1,4 +1,4 @@
-package uz.interlab.entity.news;
+package uz.interlab.entity.blog;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,8 +11,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity(name = "newness")
-public class Newness {
+@Entity(name = "blog")
+public class Blog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

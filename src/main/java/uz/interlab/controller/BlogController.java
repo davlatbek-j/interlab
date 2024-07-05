@@ -4,65 +4,65 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import uz.interlab.entity.Entrance;
+import uz.interlab.entity.blog.Blog;
 import uz.interlab.payload.ApiResponse;
-import uz.interlab.payload.EntranceDTO;
-import uz.interlab.service.EntranceService;
+import uz.interlab.payload.BlogDTO;
+import uz.interlab.service.BlogService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/entrance")
+@RequestMapping("/blog")
 @RequiredArgsConstructor
-public class EntranceController {
+public class BlogController {
 
-    private final EntranceService entranceService;
+    private final BlogService blogService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<Entrance>> createEntrance(
-            @RequestParam(value = "json") String entrance,
+    public ResponseEntity<ApiResponse<Blog>> createBlog(
+            @RequestParam(value = "json") String blog,
             @RequestPart(value = "photo") MultipartFile photo
     ) {
-        return entranceService.create(entrance, photo);
+        return blogService.create(blog, photo);
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<ApiResponse<EntranceDTO>> getById(
+    public ResponseEntity<ApiResponse<BlogDTO>> getById(
             @PathVariable Long id,
             @RequestHeader(value = "Accept-Language") String lang
     ) {
-        return entranceService.findById(id, lang);
+        return blogService.findById(id, lang);
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<ApiResponse<List<EntranceDTO>>> getAll(
+    public ResponseEntity<ApiResponse<List<BlogDTO>>> getAll(
             @RequestHeader(value = "Accept-Language") String lang
     ) {
-        return entranceService.findAll(lang);
+        return blogService.findAll(lang);
     }
 
     @GetMapping("/get-full-data/{id}")
-    public ResponseEntity<ApiResponse<Entrance>> getFullData(@PathVariable Long id) {
-        return entranceService.findById(id);
+    public ResponseEntity<ApiResponse<Blog>> getFullData(@PathVariable Long id) {
+        return blogService.findById(id);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse<Entrance>> updateEntrance(
+    public ResponseEntity<ApiResponse<Blog>> updateBlog(
             @PathVariable Long id,
             @RequestParam(value = "json", required = false) String json,
             @RequestPart(value = "photo", required = false) MultipartFile photo
     ) {
-        return entranceService.update(id, json, photo);
+        return blogService.update(id, json, photo);
     }
 
     @PutMapping("/change-active/{id}")
     public ResponseEntity<ApiResponse<?>> changeActive(@PathVariable Long id) {
-        return entranceService.changeActive(id);
+        return blogService.changeActive(id);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse<?>> deleteEntrance(@PathVariable Long id) {
-        return entranceService.deleteById(id);
+    public ResponseEntity<ApiResponse<?>> deleteBlog(@PathVariable Long id) {
+        return blogService.deleteById(id);
     }
 
 }

@@ -1,4 +1,4 @@
-package uz.interlab.entity.menuBanner;
+package uz.interlab.entity.blog;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -6,13 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
-@Entity(name = "menu_banner_option")
-public class MenuBannerOption {
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity(name = "links")
+public class Link {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

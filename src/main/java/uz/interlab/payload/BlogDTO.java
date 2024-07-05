@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.news.Newness;
+import uz.interlab.entity.blog.Blog;
 import uz.interlab.exception.LanguageNotSupportException;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class NewnessDTO {
+public class BlogDTO {
 
     Long id;
 
@@ -29,30 +29,30 @@ public class NewnessDTO {
 
     List<LinkDTO> links;
 
-    public NewnessDTO(Newness newness, String lang) {
-        this.id = newness.getId();
-        this.photoUrl = newness.getPhotoUrl();
+    public BlogDTO(Blog blog, String lang) {
+        this.id = blog.getId();
+        this.photoUrl = blog.getPhotoUrl();
 
         switch (lang.toLowerCase()) {
 
             case "uz": {
-                this.title = newness.getTitleUz();
-                this.description = newness.getDescriptionUz();
-                this.body = newness.getBodyUz();
+                this.title = blog.getTitleUz();
+                this.description = blog.getDescriptionUz();
+                this.body = blog.getBodyUz();
                 break;
             }
 
             case "ru": {
-                this.title = newness.getTitleRu();
-                this.description = newness.getDescriptionRu();
-                this.body = newness.getBodyRu();
+                this.title = blog.getTitleRu();
+                this.description = blog.getDescriptionRu();
+                this.body = blog.getBodyRu();
                 break;
             }
             default:
                 throw new LanguageNotSupportException("Language not supported" + lang);
         }
 
-        this.links = newness.getLinks().stream()
+        this.links = blog.getLinks().stream()
                 .map(link -> new LinkDTO(link, lang))
                 .collect(Collectors.toList());
     }
