@@ -33,21 +33,19 @@ public class DoctorDTO
         this.photoUrl = entity.getPhotoUrl();
         this.main = entity.isMain();
         this.active = entity.isActive();
-        this.speciality = new ArrayList<>();
 
         switch (lang.toLowerCase())
         {
             case "uz":
             {
                 this.fullName = entity.getFullNameUz();
-                this.speciality.addAll(entity.getSpecialityUz());
+                this.speciality = entity.getSpecialityUz();
                 break;
             }
             case "ru":
             {
                 this.fullName = entity.getFullNameRu();
                 this.speciality = entity.getSpecialityRu();
-                this.speciality.addAll(entity.getSpecialityRu());
                 break;
             }
             default:
