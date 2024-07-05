@@ -52,7 +52,7 @@ public class PhotoService
             photo.setName(originalFilename);
             photo.setFilepath(uploadDir.getAbsolutePath());
             photo.setType(file.getContentType());
-            photo.setHttpUrl("http://localhost:8100/photo/" + photo.getName());
+            photo.setHttpUrl("http://213.230.91.55:8100/photo/" + photo.getName());
 
             return photoRepo.save(photo);
         } catch (IOException e)
