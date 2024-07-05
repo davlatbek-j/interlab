@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import uz.interlab.entity.doctor.Doctor;
 import uz.interlab.exception.LanguageNotSupportException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -32,13 +33,14 @@ public class DoctorDTO
         this.photoUrl = entity.getPhotoUrl();
         this.main = entity.isMain();
         this.active = entity.isActive();
+        this.speciality = new ArrayList<>();
 
         switch (lang.toLowerCase())
         {
             case "uz":
             {
                 this.fullName = entity.getFullNameUz();
-                this.speciality = entity.getSpecialityUz();
+                this.speciality.addAll(entity.getSpecialityUz());
                 break;
             }
             case "ru":
