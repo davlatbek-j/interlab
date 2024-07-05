@@ -36,7 +36,6 @@ public class Doctor
 
     boolean active;
 
-    @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    DoctorDetails details;
+    Long detailsId;
 }

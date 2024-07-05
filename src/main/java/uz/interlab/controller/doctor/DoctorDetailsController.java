@@ -33,16 +33,17 @@ public class DoctorDetailsController
         return detailsService.findByDoctorId(doctorId, lang);
     }
 
-    @PutMapping("/update/{doctor-id}")
+    @PutMapping("/update")
     public ResponseEntity<ApiResponse<DoctorDetails>> update(
-            @PathVariable("doctor-id") Long doctorId,
-            @RequestBody DoctorDetails doctorDetails)
+            @RequestParam("doctor-id") Long doctorId,
+            @RequestBody DoctorDetails newDoctorDetails)
     {
-        return detailsService.update(doctorId, doctorDetails);
+        return detailsService.update(doctorId, newDoctorDetails);
     }
 
-    @DeleteMapping("/delete/{doctor-id}")
-    public ResponseEntity<ApiResponse<?>> delete(@PathVariable("doctor-id") Long doctorId)
+    @DeleteMapping("/delete")
+    public ResponseEntity<ApiResponse<?>> delete(
+            @RequestParam("doctor-id") Long doctorId)
     {
         return detailsService.delete(doctorId);
     }

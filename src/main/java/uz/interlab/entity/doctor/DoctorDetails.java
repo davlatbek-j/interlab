@@ -20,22 +20,36 @@ public class DoctorDetails
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "schedule_id", referencedColumnName = "id")
-    Schedule schedule;
+    @OneToOne
+    Doctor doctor;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    List<Occupation> occupation;
+    @ElementCollection
+    List<String> scheduleUz;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    List<Education> education;
+    @ElementCollection
+    List<String> scheduleRu;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    List<Training> training;
+    @ElementCollection
+    List<String> experienceUz;
 
-    String langUz;
+    @ElementCollection
+    List<String> experienceRu;
 
-    String langRu;
+    @ElementCollection
+    List<String> educationUz;
+
+    @ElementCollection
+    List<String> educationRu;
+
+    String languageUz;
+
+    String languageRu;
+
+    @ElementCollection
+    List<String> achievementUz;
+
+    @ElementCollection
+    List<String> achievementRu;
 
     @Enumerated(EnumType.STRING)
     Gender gender;
