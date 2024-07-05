@@ -26,8 +26,10 @@ public class Banner {
     @Column(length = 1000)
     String descriptionRu;
 
+    boolean active;
+
     String photoUrl;
 
-    boolean active;
+    String navigateToUrl;
 
 }

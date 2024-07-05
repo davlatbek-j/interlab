@@ -18,13 +18,16 @@ public class BannerDTO {
 
     String description;
 
+    boolean active;
+
     String photoUrl;
 
-    boolean active;
+    String navigateToUrl;
 
     public BannerDTO(Banner banner, String lang) {
         this.id = banner.getId();
         this.photoUrl = banner.getPhotoUrl();
+        this.navigateToUrl= banner.getNavigateToUrl();
         switch (lang.toLowerCase()) {
 
             case "uz": {
@@ -32,7 +35,6 @@ public class BannerDTO {
                 this.description = banner.getDescriptionUz();
                 break;
             }
-
             case "ru": {
                 this.title = banner.getTitleRu();
                 this.description = banner.getDescriptionRu();
