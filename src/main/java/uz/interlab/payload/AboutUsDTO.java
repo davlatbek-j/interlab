@@ -25,6 +25,7 @@ public class AboutUsDTO {
     public AboutUsDTO(AboutUs banner, String lang) {
         this.id = banner.getId();
         this.photoUrl = banner.getPhotoUrl();
+        this.active= banner.isActive();
         switch (lang.toLowerCase()) {
 
             case "uz": {

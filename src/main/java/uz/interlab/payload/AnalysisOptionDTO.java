@@ -4,13 +4,13 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.Banner;
+import uz.interlab.entity.analysis.AnalysisOption;
 import uz.interlab.exception.LanguageNotSupportException;
 
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BannerDTO {
+public class AnalysisOptionDTO {
 
     Long id;
 
@@ -18,27 +18,21 @@ public class BannerDTO {
 
     String description;
 
-    boolean active;
+    Double price;
 
-    String photoUrl;
-
-    String navigateToUrl;
-
-    public BannerDTO(Banner banner, String lang) {
-        this.id = banner.getId();
-        this.photoUrl = banner.getPhotoUrl();
-        this.navigateToUrl= banner.getNavigateToUrl();
-        this.active=banner.isActive();
+    public AnalysisOptionDTO(AnalysisOption analysisOption, String lang) {
+        this.id = analysisOption.getId();
+        this.price = analysisOption.getPrice();
         switch (lang.toLowerCase()) {
 
             case "uz": {
-                this.title = banner.getTitleUz();
-                this.description = banner.getDescriptionUz();
+                this.title = analysisOption.getTitleUz();
+                this.description = analysisOption.getDescriptionUz();
                 break;
             }
             case "ru": {
-                this.title = banner.getTitleRu();
-                this.description = banner.getDescriptionRu();
+                this.title = analysisOption.getTitleRu();
+                this.description = analysisOption.getDescriptionRu();
                 break;
             }
             default:
