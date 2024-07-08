@@ -36,6 +36,14 @@ public class DoctorController
         return doctorService.findById(id, lang);
     }
 
+    @GetMapping("/{slug}")
+    ResponseEntity<ApiResponse<DoctorDTO>> getBySlug(
+            @PathVariable String slug,
+            @RequestHeader(value = "Accept-Language") String lang)
+    {
+        return doctorService.findBySlug(slug, lang);
+    }
+
     @GetMapping("/get-all")
     ResponseEntity<ApiResponse<List<DoctorDTO>>> getAll(
             @RequestParam(value = "main", defaultValue = "all", required = false) String main,
@@ -45,10 +53,10 @@ public class DoctorController
         return doctorService.findAll(lang, main, active);
     }
 
-    @GetMapping("get-full-data/{id}")
-    ResponseEntity<ApiResponse<Doctor>> getFullData(@PathVariable Long id)
+    @GetMapping("/get-full-data/{slug}")
+    ResponseEntity<ApiResponse<Doctor>> getFullData(@PathVariable String slug)
     {
-        return doctorService.findById(id);
+        return doctorService.findBySlug(slug);
     }
 
     @PutMapping("/update/{id}")

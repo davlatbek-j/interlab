@@ -151,4 +151,44 @@ public class DetailsService
         response.setData(serviceDetails);
         return ResponseEntity.status(200).body(response);
     }
+
+    public ResponseEntity<ApiResponse<ServiceDetailsDTO>> findByServiceSlug(String serviceSlug, String lang)
+    {
+        ApiResponse<ServiceDetailsDTO> response = new ApiResponse<>();
+        if (!serviceRepo.existsBySlug(serviceSlug))
+        {
+            response.setMessage("Service not found by slug: " + serviceSlug);
+            return ResponseEntity.status(404).body(response);
+        }
+        Long detailsId = serviceRepo.findDetailsIdByServiceSlug(serviceSlug);
+        if (detailsId == null)
+        {
+            response.setMessage("Service details is null");
+            return ResponseEntity.status(200).body(response);
+        }
+        ServiceDetails serviceDetails = detailsRepo.findById(detailsId).get();
+        response.setMessage("Found");
+        response.setData(new ServiceDetailsDTO(serviceDetails, lang));
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<ServiceDetails>> findByServiceSlug(String slug)
+    {
+        ApiResponse<ServiceDetails> response = new ApiResponse<>();
+        if (!serviceRepo.existsBySlug(slug))
+        {
+            response.setMessage("Service not found by slug: " + slug);
+            return ResponseEntity.status(404).body(response);
+        }
+        Long detailsId = serviceRepo.findDetailsIdByServiceSlug(slug);
+        if (detailsId == null)
+        {
+            response.setMessage("Service details is null");
+            return ResponseEntity.status(200).body(response);
+        }
+        ServiceDetails serviceDetails = detailsRepo.findById(detailsId).get();
+        response.setMessage("Found");
+        response.setData(serviceDetails);
+        return ResponseEntity.status(200).body(response);
+    }
 }

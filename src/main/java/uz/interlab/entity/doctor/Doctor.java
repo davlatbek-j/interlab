@@ -21,6 +21,9 @@ public class Doctor
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(unique = true)
+    String slug;
+
     String fullNameUz;
     String fullNameRu;
 

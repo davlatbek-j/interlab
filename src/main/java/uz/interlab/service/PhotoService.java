@@ -41,7 +41,7 @@ public class PhotoService
         try
         {
             Photo photo = photoRepo.save(new Photo());
-            String originalFilename = photo.getId() +"-"+ file.getOriginalFilename();
+            String originalFilename = photo.getId() + "-" + file.getOriginalFilename().replaceAll(" ", "%20");
 
             Path filePath = Paths.get(photoUploadPath + File.separator + originalFilename);
             File uploadDir = new File(filePath.toUri());
@@ -72,6 +72,7 @@ public class PhotoService
                 id = Long.valueOf(nameOrId);
             } catch (NumberFormatException ignored)
             {
+                nameOrId = nameOrId.replaceAll(" ", "%20");
             }
 
             Photo photo = photoRepo.findByIdOrName(id, nameOrId);

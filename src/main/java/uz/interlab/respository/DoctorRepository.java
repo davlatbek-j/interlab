@@ -27,4 +27,16 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long>
     List<Doctor> findByMainAndActive(boolean main, boolean active);
 
     List<Doctor> findByActive(boolean active);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE doctor SET slug = :slug WHERE id = :doctorId", nativeQuery = true)
+    void updateSlug(@Param("slug") String slug, @Param("doctorId") Long doctorId);
+
+    boolean existsBySlug(String slug);
+
+    Doctor findBySlug(String slug);
+
+    @Query(value = "SELECT slug FROM doctor WHERE id=:id", nativeQuery = true)
+    String findSlugById(@Param("id") Long doctorId);
 }

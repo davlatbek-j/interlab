@@ -36,13 +36,14 @@ public class ServiceController
     {
         return entityService.findById(id, lang);
     }
-    /*@GetMapping("{slug}")
+
+    @GetMapping("{slug}")
     public ResponseEntity<ApiResponse<ServiceDTO>> getBySlug(
-            @PathVariable Long slug,
+            @PathVariable String slug,
             @RequestHeader(value = "Accept-Language") String lang)
     {
         return entityService.findBySlug(slug, lang);
-    }*/
+    }
 
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<ServiceDTO>>> getAll(
@@ -51,10 +52,11 @@ public class ServiceController
         return entityService.findAll(lang);
     }
 
-    @GetMapping("/get-full-data/{id}")
-    public ResponseEntity<ApiResponse<Service>> getFullData(@PathVariable Long id)
+    @GetMapping("/get-full-data/{slug}")
+    public ResponseEntity<ApiResponse<Service>> getFullData(@PathVariable String slug)
     {
-        return entityService.findById(id);
+        System.err.println("slug = " + slug);
+        return entityService.findBySlug(slug);
     }
 
     @PutMapping("/update/{id}")

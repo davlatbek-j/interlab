@@ -17,6 +17,8 @@ public class DoctorDTO
 {
     Long id;
 
+    String slug;
+
     String fullName;
 
     List<String> speciality;

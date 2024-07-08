@@ -20,6 +20,8 @@ public class DoctorDetails
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    String slug;
+
     @OneToOne
     Doctor doctor;
 

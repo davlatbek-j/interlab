@@ -13,6 +13,7 @@ import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.doctor.DoctorDTO;
 import uz.interlab.respository.DoctorRepository;
 import uz.interlab.service.PhotoService;
+import uz.interlab.util.SlugUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,11 @@ public class DoctorService
 
             doctor.setPhotoUrl(photo.getHttpUrl());
             Doctor save = doctorRepo.save(doctor);
+            String slug = save.getId() + "-" + SlugUtil.makeSlug(save.getFullNameUz());
+            doctorRepo.updateSlug(slug, save.getId());
+
+            save.setSlug(slug);
+            response.setMessage("Created");
             response.setData(save);
             return ResponseEntity.status(201).body(response);
         } catch (JsonProcessingException e)
@@ -128,6 +134,7 @@ public class DoctorService
             return ResponseEntity.status(404).body(response);
         }
         String oldPhotoUrl = doctorRepo.findPhotoUrlById(id);
+        String slug = doctorRepo.findSlugById(id);
         Doctor newDoctor = new Doctor();
         try
         {
@@ -137,6 +144,7 @@ public class DoctorService
                 if (newPhoto == null || !(newPhoto.getSize() > 0))
                     newDoctor.setPhotoUrl(oldPhotoUrl);
                 newDoctor.setId(id);
+                newDoctor.setSlug(slug);
             } else
                 newDoctor = doctorRepo.findById(id).get();
 
@@ -167,4 +175,33 @@ public class DoctorService
         doctorRepo.deleteById(id);
         return ResponseEntity.status(200).body(response);
     }
+
+    public ResponseEntity<ApiResponse<DoctorDTO>> findBySlug(String slug, String lang)
+    {
+        ApiResponse<DoctorDTO> response = new ApiResponse<>();
+        if (!doctorRepo.existsBySlug(slug))
+        {
+            response.setMessage("Doctor not found by slug: " + slug);
+            return ResponseEntity.status(404).body(response);
+        }
+        Doctor doctor = doctorRepo.findBySlug(slug);
+        response.setMessage("Found");
+        response.setData(new DoctorDTO(doctor, lang));
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<Doctor>> findBySlug(String slug)
+    {
+        ApiResponse<Doctor> response = new ApiResponse<>();
+        if (!doctorRepo.existsBySlug(slug))
+        {
+            response.setMessage("Doctor not found by slug: " + slug);
+            return ResponseEntity.status(404).body(response);
+        }
+        Doctor doctor = doctorRepo.findBySlug(slug);
+        response.setMessage("Found");
+        response.setData(doctor);
+        return ResponseEntity.status(200).body(response);
+    }
+
 }

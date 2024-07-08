@@ -35,11 +35,19 @@ public class ServiceDetailsController
         return detailsService.findByServiceId(serviceId, lang);
     }
 
-    @GetMapping("/get-full-data/{service-id}")
-    public ResponseEntity<ApiResponse<ServiceDetails>> findById(
-            @PathVariable(value = "service-id") Long serviceId)
+    @GetMapping("{slug}")
+    public ResponseEntity<ApiResponse<ServiceDetailsDTO>> getBySlug(
+            @PathVariable String slug,
+            @RequestHeader(value = "Accept-Language")String lang)
     {
-        return detailsService.findByServiceId(serviceId);
+        return detailsService.findByServiceSlug(slug, lang);
+    }
+
+    @GetMapping("/get-full-data/{slug}")
+    public ResponseEntity<ApiResponse<ServiceDetails>> findById(
+            @PathVariable(value = "slug") String slug)
+    {
+        return detailsService.findByServiceSlug(slug);
     }
 
     @PutMapping("/update/{service-id}")

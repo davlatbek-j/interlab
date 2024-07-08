@@ -16,6 +16,8 @@ public class ServiceDTO
 {
     Long id;
 
+    String slug;
+
     String name;
 
     String description;
@@ -32,6 +34,7 @@ public class ServiceDTO
         this.iconUrl = entity.getIconUrl();
         this.active = entity.isActive();
         this.main = entity.isMain();
+        this.slug = entity.getSlug();
 
         switch (lang.toLowerCase())
         {

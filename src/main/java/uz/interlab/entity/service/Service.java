@@ -19,6 +19,9 @@ public class Service
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(unique = true)
+    String slug;
+
     String nameUz;
 
     String nameRu;
