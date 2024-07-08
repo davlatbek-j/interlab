@@ -28,4 +28,9 @@ public class AnalysisOption {
 
     Double price;
 
+    @Column(unique = true)
+    String slug;
+
+    boolean popular;
+
 }

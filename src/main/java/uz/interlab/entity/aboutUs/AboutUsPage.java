@@ -1,4 +1,4 @@
-package uz.interlab.entity;
+package uz.interlab.entity.aboutUs;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -6,11 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
-@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity(name = "banner")
-public class Banner {
+@NoArgsConstructor
+@Entity(name = "about_us_page")
+public class AboutUsPage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,22 +20,18 @@ public class Banner {
 
     String titleUz;
 
-    String subtitleUz;
-
     String titleRu;
+
+    String subtitleUz;
 
     String subtitleRu;
 
-    @Column(length = 1000)
     String descriptionUz;
 
-    @Column(length = 1000)
     String descriptionRu;
 
     boolean active;
 
-    String photoUrl;
-
-    String navigateToUrl;
+    List<String> photoUrls;
 
 }
