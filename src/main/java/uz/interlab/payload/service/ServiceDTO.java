@@ -16,23 +16,26 @@ public class ServiceDTO
 {
     Long id;
 
+    String slug;
+
     String name;
 
     String description;
 
     String iconUrl;
 
-    String detailsUrl;
-
     boolean active;
+
+    boolean main;
 
     public ServiceDTO(Service entity, String lang)
     {
         this.id = entity.getId();
         this.iconUrl = entity.getIconUrl();
-        if (entity.getDetails() != null)
-            this.detailsUrl = "http://localhost:8100/service-details/get?service-id=" + entity.getId() + "&lang=" + lang;
         this.active = entity.isActive();
+        this.main = entity.isMain();
+        this.slug = entity.getSlug();
+
         switch (lang.toLowerCase())
         {
             case "uz":

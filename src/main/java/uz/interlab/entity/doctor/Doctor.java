@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -19,11 +21,17 @@ public class Doctor
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(unique = true)
+    String slug;
+
     String fullNameUz;
     String fullNameRu;
 
-    String specialityUz;
-    String specialityRu;
+    @ElementCollection
+    List<String> specialityUz;
+
+    @ElementCollection
+    List<String> specialityRu;
 
     String photoUrl;
 
@@ -31,7 +39,6 @@ public class Doctor
 
     boolean active;
 
-    @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    DoctorDetails details;
+    Long detailsId;
 }

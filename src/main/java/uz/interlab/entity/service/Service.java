@@ -19,6 +19,9 @@ public class Service
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(unique = true)
+    String slug;
+
     String nameUz;
 
     String nameRu;
@@ -29,9 +32,14 @@ public class Service
 
     String iconUrl;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    String categoryUz;
+
+    String categoryRu;
+
     @JsonIgnore
-    ServiceDetails details;
+    Long detailsId;
 
     boolean active;
+
+    boolean main;
 }

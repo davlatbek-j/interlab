@@ -14,8 +14,6 @@ import uz.interlab.respository.DetailsRepository;
 import uz.interlab.respository.ServiceRepository;
 import uz.interlab.service.PhotoService;
 
-import java.util.Optional;
-
 @RequiredArgsConstructor
 
 @Service
@@ -39,20 +37,17 @@ public class DetailsService
         try
         {
             ServiceDetails serviceDetails = jsonMapper.readValue(jsonDetails, ServiceDetails.class);
-            serviceDetails.setPhotoUrl(photoService.save(photo).getHttpUrl());
+            serviceDetails.setService(serviceRepo.findById(serviceId).get());
+            if (photo != null && !photo.isEmpty())
+                serviceDetails.setPhotoUrl(photoService.save(photo).getHttpUrl());
 
-            ServiceDetails save = detailsRepo.save(serviceDetails);
-
-            serviceRepo.updateDetailsId(serviceId, save.getId());
-
-            response.setMessage("Created");
-            response.setData(save);
+            ServiceDetails saved = detailsRepo.save(serviceDetails);
+            serviceRepo.updateDetailsId(serviceId, saved.getId());
+            response.setData(saved);
             return ResponseEntity.status(201).body(response);
         } catch (JsonProcessingException e)
         {
-            e.printStackTrace();
-            response.setMessage("Error on parsing json :" + e.getMessage());
-            response.setData(null);
+            response.setMessage("Error parsing json " + e.getMessage());
             return ResponseEntity.status(400).body(response);
         }
     }
@@ -67,26 +62,21 @@ public class DetailsService
         }
         Long detailsId = serviceRepo.findDetailsIdByServiceId(serviceId);
 
-        if (detailsId == null)
+        if (detailsId == null || !detailsRepo.existsById(detailsId))
         {
             response.setMessage("Service details is null");
             return ResponseEntity.status(200).body(response);
         }
 
-        Optional<ServiceDetails> serviceDetails = detailsRepo.findById(detailsId);
-        if (serviceDetails.isEmpty())
-        {
-            response.setMessage("Service details is null");
-            return ResponseEntity.status(200).body(response);
-        }
+        ServiceDetails serviceDetails = detailsRepo.findById(detailsId).get();
 
         response.setMessage("Found");
-        serviceDetails.ifPresent(details -> response.setData(new ServiceDetailsDTO(details, lang)));
-
+        response.setData(new ServiceDetailsDTO(serviceDetails, lang));
         return ResponseEntity.status(200).body(response);
     }
 
-    public ResponseEntity<ApiResponse<ServiceDetails>> update(Long serviceId, String newJson, MultipartFile newPhoto)
+    public ResponseEntity<ApiResponse<ServiceDetails>> update(Long serviceId, String newJson, MultipartFile
+            newPhoto)
     {
         ApiResponse<ServiceDetails> response = new ApiResponse<>();
         if (!detailsRepo.existsById(serviceId))
@@ -157,6 +147,46 @@ public class DetailsService
             return ResponseEntity.status(404).body(response);
         }
         ServiceDetails serviceDetails = detailsRepo.findById(serviceId).get();
+        response.setMessage("Found");
+        response.setData(serviceDetails);
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<ServiceDetailsDTO>> findByServiceSlug(String serviceSlug, String lang)
+    {
+        ApiResponse<ServiceDetailsDTO> response = new ApiResponse<>();
+        if (!serviceRepo.existsBySlug(serviceSlug))
+        {
+            response.setMessage("Service not found by slug: " + serviceSlug);
+            return ResponseEntity.status(404).body(response);
+        }
+        Long detailsId = serviceRepo.findDetailsIdByServiceSlug(serviceSlug);
+        if (detailsId == null)
+        {
+            response.setMessage("Service details is null");
+            return ResponseEntity.status(200).body(response);
+        }
+        ServiceDetails serviceDetails = detailsRepo.findById(detailsId).get();
+        response.setMessage("Found");
+        response.setData(new ServiceDetailsDTO(serviceDetails, lang));
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<ServiceDetails>> findByServiceSlug(String slug)
+    {
+        ApiResponse<ServiceDetails> response = new ApiResponse<>();
+        if (!serviceRepo.existsBySlug(slug))
+        {
+            response.setMessage("Service not found by slug: " + slug);
+            return ResponseEntity.status(404).body(response);
+        }
+        Long detailsId = serviceRepo.findDetailsIdByServiceSlug(slug);
+        if (detailsId == null)
+        {
+            response.setMessage("Service details is null");
+            return ResponseEntity.status(200).body(response);
+        }
+        ServiceDetails serviceDetails = detailsRepo.findById(detailsId).get();
         response.setMessage("Found");
         response.setData(serviceDetails);
         return ResponseEntity.status(200).body(response);

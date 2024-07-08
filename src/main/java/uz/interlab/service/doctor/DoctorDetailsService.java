@@ -1,6 +1,7 @@
 package uz.interlab.service.doctor;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ public class DoctorDetailsService
             return ResponseEntity.status(404).body(response);
         }
 
+        details.setDoctor(doctorRepo.findById(doctorId).get());
         DoctorDetails save = detailsRepo.save(details);
         doctorRepo.setDetailsId(doctorId, save.getId());
 
@@ -69,6 +71,7 @@ public class DoctorDetailsService
         Long detailsId = doctorRepo.findDetailsId(doctorId);
 
         doctorDetails.setId(detailsId);
+        doctorDetails.setDoctor(doctorRepo.findById(doctorId).get());
 
         DoctorDetails newDoctorDetails = detailsRepo.save(doctorDetails);
 
@@ -86,6 +89,12 @@ public class DoctorDetailsService
             return ResponseEntity.status(404).body(response);
         }
         Long detailsId = doctorRepo.findDetailsId(doctorId);
+        if (detailsId == null)
+        {
+            response.setMessage("Already deleted");
+            return ResponseEntity.ok(response);
+        }
+
         doctorRepo.setDetailsId(doctorId, null);
         detailsRepo.deleteById(detailsId);
         response.setMessage("Deleted");

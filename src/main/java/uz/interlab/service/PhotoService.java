@@ -41,7 +41,7 @@ public class PhotoService
         try
         {
             Photo photo = photoRepo.save(new Photo());
-            String originalFilename = photo.getId() +"-"+ file.getOriginalFilename();
+            String originalFilename = photo.getId() + "-" + file.getOriginalFilename().replaceAll(" ", "%20");
 
             Path filePath = Paths.get(photoUploadPath + File.separator + originalFilename);
             File uploadDir = new File(filePath.toUri());
@@ -52,7 +52,7 @@ public class PhotoService
             photo.setName(originalFilename);
             photo.setFilepath(uploadDir.getAbsolutePath());
             photo.setType(file.getContentType());
-            photo.setHttpUrl("http://localhost:8100/photo/" + photo.getName());
+            photo.setHttpUrl("http://213.230.91.55:8100/photo/" + photo.getName());
 
             return photoRepo.save(photo);
         } catch (IOException e)
@@ -72,6 +72,7 @@ public class PhotoService
                 id = Long.valueOf(nameOrId);
             } catch (NumberFormatException ignored)
             {
+                nameOrId = nameOrId.replaceAll(" ", "%20");
             }
 
             Photo photo = photoRepo.findByIdOrName(id, nameOrId);

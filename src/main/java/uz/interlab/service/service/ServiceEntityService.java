@@ -9,9 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 import uz.interlab.entity.service.Service;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.service.ServiceDTO;
-import uz.interlab.respository.ServiceDetailsRepository;
 import uz.interlab.respository.ServiceRepository;
 import uz.interlab.service.PhotoService;
+import uz.interlab.util.SlugUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,10 @@ public class ServiceEntityService
             Service service = jsonMapper.readValue(json, Service.class);
             service.setId(null);
             service.setIconUrl(photoService.save(photo).getHttpUrl());
-            serviceRepo.save(service);
+            Service saved = serviceRepo.save(service);
+            String slug = saved.getId() + "-" + SlugUtil.makeSlug(service.getNameUz());
+            serviceRepo.updateSlug(slug, service.getId());
+            saved.setSlug(slug);
             response.setData(service);
             response.setMessage("Created");
             return ResponseEntity.status(201).body(response);
@@ -94,6 +97,7 @@ public class ServiceEntityService
             return ResponseEntity.status(404).body(response);
         }
         String oldIconUrl = serviceRepo.findById(id).get().getIconUrl();
+        String slug = serviceRepo.findSlugById(id);
         Service newService = new Service();
 
         try
@@ -104,6 +108,7 @@ public class ServiceEntityService
                 if (newPhoto == null || !(newPhoto.getSize() > 0))
                     newService.setIconUrl(oldIconUrl);
                 newService.setId(id);
+                newService.setSlug(slug);
             } else
                 newService = serviceRepo.findById(id).get();
 
@@ -136,4 +141,33 @@ public class ServiceEntityService
         return ResponseEntity.status(200).body(response);
     }
 
+    public ResponseEntity<ApiResponse<ServiceDTO>> findBySlug(String slug, String lang)
+    {
+        ApiResponse<ServiceDTO> response = new ApiResponse<>();
+
+        if (!serviceRepo.existsBySlug(slug))
+        {
+            response.setMessage("Service not found by slug:" + slug);
+            return ResponseEntity.status(404).body(response);
+        }
+        Service bySlug = serviceRepo.findBySlug(slug);
+        response.setMessage("Found");
+        response.setData(new ServiceDTO(bySlug, lang));
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<Service>> findBySlug(String slug)
+    {
+        ApiResponse<Service> response = new ApiResponse<>();
+
+        if (!serviceRepo.existsBySlug(slug))
+        {
+            response.setMessage("Service not found by slug:" + slug);
+            return ResponseEntity.status(404).body(response);
+        }
+        Service bySlug = serviceRepo.findBySlug(slug);
+        response.setMessage("Found");
+        response.setData(bySlug);
+        return ResponseEntity.status(200).body(response);
+    }
 }

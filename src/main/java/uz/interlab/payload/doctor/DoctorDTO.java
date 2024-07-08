@@ -7,6 +7,9 @@ import lombok.experimental.FieldDefaults;
 import uz.interlab.entity.doctor.Doctor;
 import uz.interlab.exception.LanguageNotSupportException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -14,9 +17,11 @@ public class DoctorDTO
 {
     Long id;
 
+    String slug;
+
     String fullName;
 
-    String speciality;
+    List<String> speciality;
 
     String photoUrl;
 
