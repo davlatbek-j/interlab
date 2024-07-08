@@ -36,6 +36,13 @@ public class ServiceController
     {
         return entityService.findById(id, lang);
     }
+    /*@GetMapping("{slug}")
+    public ResponseEntity<ApiResponse<ServiceDTO>> getBySlug(
+            @PathVariable Long slug,
+            @RequestHeader(value = "Accept-Language") String lang)
+    {
+        return entityService.findBySlug(slug, lang);
+    }*/
 
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<ServiceDTO>>> getAll(

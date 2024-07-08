@@ -14,39 +14,38 @@ import uz.interlab.exception.LanguageNotSupportException;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ServiceDetailsDTO
 {
-    Long id;
+    Long serviceId;
 
     String name;
 
     String description;
 
-    String text;
-
     String photoUrl;
+
+    String text;
 
     public ServiceDetailsDTO(ServiceDetails entity, String lang)
     {
-        this.id = entity.getId();
+        this.serviceId = entity.getService().getId();
         this.photoUrl = entity.getPhotoUrl();
-
         switch (lang.toLowerCase())
         {
             case "uz":
             {
-                this.name = entity.getNameUz();
-                this.description = entity.getDescriptionUz();
+                this.name = entity.getService().getNameUz();
+                this.description = entity.getService().getDescriptionUz();
                 this.text = entity.getTextUz();
                 break;
             }
             case "ru":
             {
-                this.name = entity.getNameRu();
-                this.description = entity.getDescriptionRu();
+                this.name = entity.getService().getNameRu();
+                this.description = entity.getService().getDescriptionRu();
                 this.text = entity.getTextRu();
                 break;
             }
             default:
-                throw new LanguageNotSupportException("Language not supported :" + lang);
+                throw new LanguageNotSupportException("Language not supported: " + lang);
         }
     }
 }

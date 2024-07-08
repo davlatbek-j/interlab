@@ -18,17 +18,14 @@ public class ServiceDetails
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String nameUz;
-    String nameRu;
-
-    String descriptionUz;
-    String descriptionRu;
-
-    @Column(length = 2000)
-    String textUz;
-
-    @Column(length = 2000)
-    String textRu;
+    @OneToOne
+    Service service;
 
     String photoUrl;
+
+    @Column(length = 1000)
+    String textUz;
+
+    @Column(length = 1000)
+    String textRu;
 }

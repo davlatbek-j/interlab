@@ -21,10 +21,10 @@ public class ServiceDetailsController
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<ServiceDetails>> createServiceDetails(
             @RequestParam(value = "service-id") Long serviceId,
-            @RequestParam(value = "json") String jsonDetails,
-            @RequestPart(value = "photo") MultipartFile photo)
+            @RequestParam(value = "json") String json,
+            @RequestPart(value = "photo", required = false) MultipartFile photo)
     {
-        return detailsService.createDetails(serviceId, jsonDetails, photo);
+        return detailsService.createDetails(serviceId, json, photo);
     }
 
     @GetMapping("/get")
@@ -32,7 +32,6 @@ public class ServiceDetailsController
             @RequestParam(name = "service-id") Long serviceId,
             @RequestParam(value = "lang") String lang)
     {
-        System.err.println("serviceId = " + serviceId);
         return detailsService.findByServiceId(serviceId, lang);
     }
 

@@ -1,18 +1,16 @@
-package uz.interlab.payload.service;
+package uz.interlab.payload;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.service.Service;
+import uz.interlab.entity.Sale;
 import uz.interlab.exception.LanguageNotSupportException;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ServiceDTO
+public class SaleDTO
 {
     Long id;
 
@@ -20,18 +18,20 @@ public class ServiceDTO
 
     String description;
 
-    String iconUrl;
+    String time;
 
-    boolean active;
+    String photoUrl;
 
     boolean main;
 
-    public ServiceDTO(Service entity, String lang)
+    boolean active;
+
+    public SaleDTO(Sale entity, String lang)
     {
         this.id = entity.getId();
-        this.iconUrl = entity.getIconUrl();
-        this.active = entity.isActive();
+        this.photoUrl = entity.getPhotoUrl();
         this.main = entity.isMain();
+        this.active = entity.isActive();
 
         switch (lang.toLowerCase())
         {
@@ -39,12 +39,14 @@ public class ServiceDTO
             {
                 this.name = entity.getNameUz();
                 this.description = entity.getDescriptionUz();
+                this.time = entity.getTimeUz();
                 break;
             }
             case "ru":
             {
                 this.name = entity.getNameRu();
                 this.description = entity.getDescriptionRu();
+                this.time = entity.getTimeRu();
                 break;
             }
             default:
