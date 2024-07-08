@@ -26,6 +26,7 @@ public class InstructionDto {
 
     public InstructionDto(Instruction instruction, String lang) {
         this.id = instruction.getId();
+        this.active=instruction.isActive();
         switch (lang.toLowerCase()) {
 
             case "uz": {
