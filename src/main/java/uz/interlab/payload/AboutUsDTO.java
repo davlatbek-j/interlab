@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.AboutUs;
+import uz.interlab.entity.aboutUs.AboutUs;
 import uz.interlab.exception.LanguageNotSupportException;
 
 @Data

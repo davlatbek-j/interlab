@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.interlab.entity.analysis.Analysis;
 import uz.interlab.payload.AnalysisDTO;
+import uz.interlab.payload.AnalysisOptionDTO;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.service.AnalysisService;
 
@@ -61,5 +62,24 @@ public class AnalysisController {
     public ResponseEntity<ApiResponse<?>> changeActive(@PathVariable Long id) {
         return analysisService.changeActive(id);
     }
-    
+
+    @PutMapping("/change-popular/{id}")
+    public ResponseEntity<ApiResponse<?>> changePopular(@PathVariable Long id) {
+        return analysisService.changePopular(id);
+    }
+
+    @GetMapping("/get-popular")
+    public ResponseEntity<ApiResponse<List<AnalysisOptionDTO>>> getPopularAnalysisOptions(
+            @RequestHeader(value = "Accept-Language") String lang
+    ) {
+        return analysisService.getPopularAnalysisOption(lang);
+    }
+
+    @GetMapping("/get/{slug}")
+    public ResponseEntity<ApiResponse<AnalysisOptionDTO>> getBySlugAnalysisOptions(
+            @PathVariable String slug,
+            @RequestHeader(value = "Accept-Language") String lang){
+        return analysisService.findBySlug(slug, lang);
+    }
+
 }

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import uz.interlab.entity.AboutUs;
+import uz.interlab.entity.aboutUs.AboutUs;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.AboutUsDTO;
 import uz.interlab.service.AboutUsService;

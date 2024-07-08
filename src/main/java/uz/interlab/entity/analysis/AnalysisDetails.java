@@ -1,4 +1,4 @@
-package uz.interlab.entity;
+package uz.interlab.entity.analysis;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,24 +9,19 @@ import lombok.experimental.FieldDefaults;
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity(name = "about_us")
-public class AboutUs {
+@Entity(name = "analysis_details")
+public class AnalysisDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String titleUz;
+    @OneToOne
+    AnalysisOption analysisOption;
 
-    String titleRu;
+    String bodyUz;
 
-    @Column(length = 1000)
-    String descriptionUz;
-
-    @Column(length = 1000)
-    String descriptionRu;
-
-    String photoUrl;
+    String bodyRu;
 
     boolean active;
 

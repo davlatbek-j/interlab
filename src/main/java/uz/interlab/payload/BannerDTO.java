@@ -16,6 +16,8 @@ public class BannerDTO {
 
     String title;
 
+    String subtitle;
+
     String description;
 
     boolean active;
@@ -33,11 +35,13 @@ public class BannerDTO {
 
             case "uz": {
                 this.title = banner.getTitleUz();
+                this.subtitle=banner.getSubtitleUz();
                 this.description = banner.getDescriptionUz();
                 break;
             }
             case "ru": {
                 this.title = banner.getTitleRu();
+                this.subtitle=banner.getSubtitleRu();
                 this.description = banner.getDescriptionRu();
                 break;
             }

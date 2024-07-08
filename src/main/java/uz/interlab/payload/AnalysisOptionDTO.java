@@ -20,9 +20,15 @@ public class AnalysisOptionDTO {
 
     Double price;
 
+    String slug;
+
+    boolean popular;
+
     public AnalysisOptionDTO(AnalysisOption analysisOption, String lang) {
         this.id = analysisOption.getId();
         this.price = analysisOption.getPrice();
+        this.slug=analysisOption.getSlug();
+        this.popular=analysisOption.isPopular();
         switch (lang.toLowerCase()) {
 
             case "uz": {
