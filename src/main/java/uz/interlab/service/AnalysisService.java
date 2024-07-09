@@ -93,7 +93,7 @@ public class AnalysisService {
         analysis.setTitleUz(updateAnalysis.getTitleUz());
         analysis.setTitleRu(updateAnalysis.getTitleRu());
         analysis.setCategory(updateAnalysis.getCategory());
-        analysis.setAnalysisOptions(updateAnalysis.getAnalysisOptions());
+        analysis.setAnalysisOptions(analysis.getAnalysisOptions());
         Analysis save = analysisRepository.save(analysis);
         List<AnalysisOption> analysisOptions = save.getAnalysisOptions();
         if (analysisOptions!=null){
