@@ -38,7 +38,6 @@ public class Blog {
 
     boolean active;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    List<Link> links;
+    String slug;
 
 }

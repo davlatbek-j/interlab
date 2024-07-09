@@ -12,6 +12,7 @@ import uz.interlab.entity.Photo;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.BlogDTO;
 import uz.interlab.respository.BlogRepository;
+import uz.interlab.util.SlugUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,9 @@ public class BlogService {
 
             blog.setPhotoUrl(photo.getHttpUrl());
             Blog save = blogRepository.save(blog);
+            String slug=save.getId()+"-"+SlugUtil.makeSlug(blog.getTitleUz());
+            blogRepository.updateSlug(slug, save.getId());
+            save.setSlug(slug);
             response.setData(save);
             return ResponseEntity.status(201).body(response);
         } catch (JsonProcessingException e) {
@@ -84,6 +88,7 @@ public class BlogService {
             return ResponseEntity.status(404).body(response);
         }
         String oldPhotoUrl = blogRepository.findPhotoUrlById(id);
+        String slug = blogRepository.findSlugById(id);
         Blog blog = new Blog();
         try {
             if (newJson != null) {
@@ -92,6 +97,7 @@ public class BlogService {
                     blog.setPhotoUrl(oldPhotoUrl);
                 }
                 blog.setId(id);
+                blog.setSlug(slug);
             } else {
                 blog = blogRepository.findById(id).get();
             }

@@ -7,9 +7,6 @@ import lombok.experimental.FieldDefaults;
 import uz.interlab.entity.blog.Blog;
 import uz.interlab.exception.LanguageNotSupportException;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -27,12 +24,13 @@ public class BlogDTO {
 
     boolean active;
 
-    List<LinkDTO> links;
+    String slug;
 
     public BlogDTO(Blog blog, String lang) {
         this.id = blog.getId();
         this.photoUrl = blog.getPhotoUrl();
         this.active=blog.isActive();
+        this.slug=blog.getSlug();
         switch (lang.toLowerCase()) {
 
             case "uz": {
@@ -51,10 +49,6 @@ public class BlogDTO {
             default:
                 throw new LanguageNotSupportException("Language not supported" + lang);
         }
-
-        this.links = blog.getLinks().stream()
-                .map(link -> new LinkDTO(link, lang))
-                .collect(Collectors.toList());
     }
 
 
