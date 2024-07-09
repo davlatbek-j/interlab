@@ -5,10 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.interlab.entity.Achievement;
-import uz.interlab.entity.Instruction;
 import uz.interlab.payload.AchievementDTO;
 import uz.interlab.payload.ApiResponse;
-import uz.interlab.payload.InstructionDto;
 import uz.interlab.respository.AchievementRepository;
 
 import java.util.ArrayList;

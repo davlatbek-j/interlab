@@ -1,9 +1,7 @@
-package uz.interlab.entity;
+package uz.interlab.entity.instruction;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,13 +13,21 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
-@Entity
-public class InstructionOption {
+@Entity(name = "instruction")
+public class Instruction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String descriptionUz;
+    String nameUz;
 
-    String descriptionRu;
+    String nameRu;
+
+    @Column(unique = true)
+    String slug;
+
+    @JsonIgnore
+    Long detailsId;
+
+    boolean active;
 }
