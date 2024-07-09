@@ -35,7 +35,7 @@ public class ServiceEntityService
             service.setIconUrl(photoService.save(photo).getHttpUrl());
             Service saved = serviceRepo.save(service);
             String slug = saved.getId() + "-" + SlugUtil.makeSlug(service.getNameUz());
-            serviceRepo.updateSlug(slug, service.getId());
+            serviceRepo.updateSlug(slug, saved.getId());
             saved.setSlug(slug);
             response.setData(service);
             response.setMessage("Created");

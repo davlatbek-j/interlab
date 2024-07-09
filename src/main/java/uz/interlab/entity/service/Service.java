@@ -36,6 +36,8 @@ public class Service
 
     String categoryRu;
 
+    String colourCode;
+
     @JsonIgnore
     Long detailsId;
 

@@ -24,6 +24,8 @@ public class ServiceDTO
 
     String iconUrl;
 
+    String colourCode;
+
     boolean active;
 
     boolean main;
@@ -32,6 +34,7 @@ public class ServiceDTO
     {
         this.id = entity.getId();
         this.iconUrl = entity.getIconUrl();
+        this.colourCode = entity.getColourCode();
         this.active = entity.isActive();
         this.main = entity.isMain();
         this.slug = entity.getSlug();
