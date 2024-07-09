@@ -1,11 +1,13 @@
 package uz.interlab.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import uz.interlab.entity.analysis.Analysis;
 import uz.interlab.entity.analysis.AnalysisOption;
 import uz.interlab.payload.AnalysisDTO;
@@ -45,6 +47,8 @@ public class AnalysisService {
         response.setData(save);
         return ResponseEntity.status(201).body(response);
     }
+
+    
 
     public ResponseEntity<ApiResponse<AnalysisDTO>> findById(Long id, String lang) {
         ApiResponse<AnalysisDTO> response = new ApiResponse<>();
@@ -91,6 +95,15 @@ public class AnalysisService {
         analysis.setCategory(updateAnalysis.getCategory());
         analysis.setAnalysisOptions(updateAnalysis.getAnalysisOptions());
         Analysis save = analysisRepository.save(analysis);
+        List<AnalysisOption> analysisOptions = save.getAnalysisOptions();
+        if (analysisOptions!=null){
+            for (AnalysisOption option : analysisOptions) {
+                String slug = option.getId()+"-"+SlugUtil.makeSlug(option.getTitleUz());
+                option.setSlug(slug);
+            }
+        }
+        save.setAnalysisOptions(analysisOptions);
+        save=analysisRepository.save(save);
         response.setData(save);
         return ResponseEntity.status(201).body(response);
     }

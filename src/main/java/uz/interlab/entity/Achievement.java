@@ -1,18 +1,19 @@
-package uz.interlab.entity.blog;
+package uz.interlab.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity(name = "blog")
-public class Blog {
+@Entity(name = "achievement")
+public class Achievement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,22 +23,10 @@ public class Blog {
 
     String titleRu;
 
-    @Column(length = 1000)
     String descriptionUz;
 
-    @Column(length = 1000)
     String descriptionRu;
 
-    @Column(length = 5000)
-    String bodyUz;
-
-    @Column(length = 5000)
-    String bodyRu;
-
-    String photoUrl;
-
     boolean active;
-
-    String slug;
 
 }
