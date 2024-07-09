@@ -44,6 +44,7 @@ public class DoctorDetailsDTO
     public DoctorDetailsDTO(DoctorDetails entity, String lang)
     {
         this.doctorId = entity.getDoctor().getId();
+        this.slug = entity.getSlug();
         this.gender = entity.getGender();
         this.active = entity.getDoctor().isActive();
         this.main = entity.getDoctor().isMain();

@@ -14,7 +14,7 @@ import uz.interlab.exception.LanguageNotSupportException;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ServiceDetailsDTO
 {
-    Long serviceId;
+    String slug;
 
     String name;
 
@@ -26,7 +26,7 @@ public class ServiceDetailsDTO
 
     public ServiceDetailsDTO(ServiceDetails entity, String lang)
     {
-        this.serviceId = entity.getService().getId();
+        this.slug = entity.getService().getSlug();
         this.photoUrl = entity.getPhotoUrl();
         switch (lang.toLowerCase())
         {
