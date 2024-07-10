@@ -29,6 +29,12 @@ public class FooterDTO
 
     String facebookUrl;
 
+    String tgIconUrl;
+
+    String youtubeIconUrl;
+
+    String instaIconUrl;
+
     List<FooterOptionDTO> option;
 
     Creator creator;

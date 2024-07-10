@@ -29,6 +29,10 @@ public class Footer
     String youtubeUrl;
     String facebookUrl;
 
+    String tgIconUrl;
+    String youtubeIconUrl;
+    String instaIconUrl;
+
     @OneToMany(cascade = CascadeType.ALL)
     List<FooterOption> footerOption;
 

@@ -21,9 +21,12 @@ public class FooterController
     public ResponseEntity<ApiResponse<Footer>> create(
             @RequestParam("json") String json,
             @RequestPart("logo") MultipartFile logo,
-            @RequestPart("creator-logo") MultipartFile creatorLogo)
+            @RequestPart("creator-logo") MultipartFile creatorLogo,
+            @RequestParam("tg-icon-url") String tgIconUrl,
+            @RequestParam("youtube-icon-url") String youtubeIconUrl,
+            @RequestParam("insta-icon-url") String instaIconUrl)
     {
-        return footerService.create(json, logo, creatorLogo);
+        return footerService.create(json, logo, creatorLogo,tgIconUrl,youtubeIconUrl,instaIconUrl);
     }
 
     @GetMapping("/get/{id}")
