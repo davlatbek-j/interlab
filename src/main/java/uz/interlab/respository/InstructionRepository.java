@@ -30,4 +30,5 @@ public interface InstructionRepository extends JpaRepository<Instruction, Long>
 
     @Query(value = "SELECT details_id FROM instruction WHERE id = :id", nativeQuery = true)
     Long findDetailsId(@Param("id") Long instructionId);
+
 }

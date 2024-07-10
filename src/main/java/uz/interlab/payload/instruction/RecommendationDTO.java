@@ -1,10 +1,10 @@
-package uz.interlab.payload.doctor;
+package uz.interlab.payload.instruction;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.doctor.Doctor;
+import uz.interlab.entity.instruction.Recommendation;
 import uz.interlab.exception.LanguageNotSupportException;
 
 import java.util.ArrayList;
@@ -13,42 +13,30 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DoctorDTO
+public class RecommendationDTO
 {
     Long id;
 
-    String slug;
+    String name;
 
-    String fullName;
+    List<String> value;
 
-    List<String> speciality;
-
-    String photoUrl;
-
-    boolean main;
-
-    boolean active;
-
-    public DoctorDTO(Doctor entity, String lang)
+    public RecommendationDTO(Recommendation entity, String lang)
     {
         this.id = entity.getId();
-        this.photoUrl = entity.getPhotoUrl();
-        this.main = entity.isMain();
-        this.active = entity.isActive();
-        this.slug = entity.getSlug();
-
+        this.value = new ArrayList<>();
         switch (lang.toLowerCase())
         {
             case "uz":
             {
-                this.fullName = entity.getFullNameUz();
-                this.speciality = entity.getSpecialityUz();
+                this.name = entity.getNameUz();
+                this.value.addAll(entity.getValueUz());
                 break;
             }
             case "ru":
             {
-                this.fullName = entity.getFullNameRu();
-                this.speciality = entity.getSpecialityRu();
+                this.name = entity.getNameRu();
+                this.value.addAll(entity.getValueRu());
                 break;
             }
             default:

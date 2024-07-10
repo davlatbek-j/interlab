@@ -1,6 +1,5 @@
 package uz.interlab.entity.instruction;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity(name = "instruction")
-public class Instruction {
+public class Instruction
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -26,8 +26,8 @@ public class Instruction {
     @Column(unique = true)
     String slug;
 
-    @JsonIgnore
-    Long detailsId;
+    @OneToOne(cascade = CascadeType.ALL)
+    InstructionDetails details;
 
     boolean active;
 }

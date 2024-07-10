@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.instruction.InstructionDetails;
+import uz.interlab.entity.instruction.Instruction;
 import uz.interlab.exception.LanguageNotSupportException;
 
 import java.util.ArrayList;
@@ -15,7 +15,9 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class InstructionDetailsDTO
 {
-    Long instructionId;
+    Long id;
+
+    String slug;
 
     String name;
 
@@ -23,23 +25,24 @@ public class InstructionDetailsDTO
 
     List<InstructionPropertyDTO> property;
 
-    public InstructionDetailsDTO(InstructionDetails entity, String lang)
+    public InstructionDetailsDTO(Instruction entity, String lang)
     {
-        this.instructionId = entity.getInstruction().getId();
+        this.id = entity.getId();
+        this.slug = entity.getSlug();
         this.property = new ArrayList<>();
-        entity.getProperty().forEach(i -> this.property.add(new InstructionPropertyDTO(i, lang)));
+        entity.getDetails().getProperty().forEach(i -> this.property.add(new InstructionPropertyDTO(i, lang)));
         switch (lang.toLowerCase())
         {
             case "uz":
             {
-                this.name = entity.getInstruction().getNameUz();
-                this.description = entity.getDescriptionUz();
+                this.name = entity.getNameUz();
+                this.description = entity.getDetails().getDescriptionUz();
                 break;
             }
             case "ru":
             {
-                this.name = entity.getInstruction().getNameRu();
-                this.description = entity.getDescriptionRu();
+                this.name = entity.getNameRu();
+                this.description = entity.getDetails().getDescriptionRu();
                 break;
             }
             default:

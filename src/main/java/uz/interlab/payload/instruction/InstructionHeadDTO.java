@@ -1,37 +1,46 @@
 package uz.interlab.payload.instruction;
 
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.instruction.Instruction;
+import uz.interlab.entity.instruction.InstructionHead;
 import uz.interlab.exception.LanguageNotSupportException;
 
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class InstructionDto
+public class InstructionHeadDTO
 {
     Long id;
 
-    String name;
+    String title;
 
-    boolean active;
+    String description;
 
-    public InstructionDto(Instruction instruction, String lang)
+    String colourCode;
+
+    String iconUrl;
+
+    public InstructionHeadDTO(InstructionHead entity, String lang)
     {
-        this.id = instruction.getId();
-        this.active = instruction.isActive();
+        this.id = entity.getId();
+        this.colourCode = entity.getColourCode();
+        this.iconUrl = entity.getIconUrl();
+
         switch (lang.toLowerCase())
         {
             case "uz":
             {
-                this.name = instruction.getNameUz();
+                this.title = entity.getTitleUz();
+                this.description = entity.getDescriptionUz();
                 break;
             }
             case "ru":
             {
-                this.name = instruction.getNameRu();
+                this.title = entity.getTitleRu();
+                this.description = entity.getDescriptionRu();
                 break;
             }
             default:

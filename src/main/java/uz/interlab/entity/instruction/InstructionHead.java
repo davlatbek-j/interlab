@@ -15,16 +15,19 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class InstructionDetails
+public class InstructionHead
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
     Long id;
 
-    String descriptionUz;
+    String titleUz;
+    String titleRu;
 
+    String descriptionUz;
     String descriptionRu;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    List<InstructionProperty> property;
+    String colourCode;
+
+    String iconUrl;
 }
