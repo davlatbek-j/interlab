@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.payload.ApplicationCreateDTO;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,22 +18,6 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String fullName;
-
-    String phoneNumber;
-
-    String serviceName;
-
-    @Column(length = 1000)
-    String comment;
-
-    public static Application map(ApplicationCreateDTO createDTO){
-        Application application=new Application();
-        application.setFullName(createDTO.getFullName());
-        application.setPhoneNumber(createDTO.getPhoneNumber());
-        application.setServiceName(createDTO.getServiceName());
-        application.setComment(createDTO.getComment());
-        return application;
-    }
+    List<String> usersInfo;
 
 }
