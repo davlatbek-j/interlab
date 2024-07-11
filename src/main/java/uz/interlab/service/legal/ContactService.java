@@ -76,7 +76,7 @@ public class ContactService {
         oldContact.setDescriptionRu(contact.getDescriptionRu());
         oldContact.setPhoneNumbers(contact.getPhoneNumbers());
         oldContact.setButtonCall(contact.getButtonCall());
-        Contact save = contactRepository.save(contact);
+        Contact save = contactRepository.save(oldContact);
         response.setData(save);
         return ResponseEntity.status(200).body(response);
     }
