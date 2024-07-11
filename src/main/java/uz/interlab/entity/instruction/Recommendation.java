@@ -1,14 +1,13 @@
-package uz.interlab.entity;
+package uz.interlab.entity.instruction;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,12 +15,18 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class InstructionOption {
+public class Recommendation
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String descriptionUz;
+    String nameUz;
+    String nameRu;
 
-    String descriptionRu;
+    @ElementCollection
+    List<String> valueUz;
+
+    @ElementCollection
+    List<String> valueRu;
 }

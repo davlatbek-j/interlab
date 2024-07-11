@@ -1,4 +1,4 @@
-package uz.interlab.entity;
+package uz.interlab.entity.instruction;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -14,18 +14,20 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
-@Entity(name = "instruction")
-public class Instruction {
+@Entity
+public class InstructionHead
+{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
     Long id;
 
-    String nameUz;
+    String titleUz;
+    String titleRu;
 
-    String nameRu;
+    String descriptionUz;
+    String descriptionRu;
 
-    boolean active;
+    String colourCode;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    List<InstructionOption> options;
+    String iconUrl;
 }

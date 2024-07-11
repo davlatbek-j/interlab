@@ -1,31 +1,30 @@
-package uz.interlab.entity.service;
+package uz.interlab.entity.instruction;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-@Table(name = "service_details")
-public class ServiceDetails
+public class InstructionDetails
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @OneToOne
-    Service service;
+    String descriptionUz;
 
-    String photoUrl;
+    String descriptionRu;
 
-    @Column(length = 3000)
-    String textUz;
-
-    @Column(length = 3000)
-    String textRu;
+    @OneToMany(cascade = CascadeType.ALL)
+    List<InstructionProperty> property;
 }
