@@ -20,13 +20,16 @@ public class FooterService
     private final ObjectMapper jsonMapper;
     private final PhotoService photoService;
 
-    public ResponseEntity<ApiResponse<Footer>> create(String json, MultipartFile logo, MultipartFile creatorLogo)
+    public ResponseEntity<ApiResponse<Footer>> create(String json, MultipartFile logo, MultipartFile creatorLogo,String tgIconUrl,String youtubeIconUrl,String instaIconUrl)
     {
         ApiResponse<Footer> response = new ApiResponse<>();
         try
         {
             Footer footer = jsonMapper.readValue(json, Footer.class);
             footer.setId(null);
+            footer.setInstaIconUrl(instaIconUrl);
+            footer.setTgIconUrl(tgIconUrl);
+            footer.setYoutubeIconUrl(youtubeIconUrl);
             footer.setLogoUrl(photoService.save(logo).getHttpUrl());
             footer.getCreator().setLogoUrl(photoService.save(creatorLogo).getHttpUrl());
             footerRepo.save(footer);
