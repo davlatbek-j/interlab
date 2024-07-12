@@ -3,7 +3,6 @@ package uz.interlab.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -34,7 +33,7 @@ public class SecurityConfiguration {
         http.
                 csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationRequest ->
-                        authorizationRequest.requestMatchers(WHITE_LIST).permitAll()
+                        authorizationRequest.requestMatchers("/**").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .userDetailsService(authService)
