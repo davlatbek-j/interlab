@@ -27,11 +27,11 @@ public class FooterService
         {
             Footer footer = jsonMapper.readValue(json, Footer.class);
             footer.setId(null);
-            footer.setInstaIconUrl(instaIconUrl);
-            footer.setTgIconUrl(tgIconUrl);
+//            footer.setInstaIconUrl(instaIconUrl);
+//            footer.setTgIconUrl(tgIconUrl);
             footer.setYoutubeIconUrl(youtubeIconUrl);
             footer.setLogoUrl(photoService.save(logo).getHttpUrl());
-            footer.getCreator().setLogoUrl(photoService.save(creatorLogo).getHttpUrl());
+//            footer.getCreator().setLogoUrl(photoService.save(creatorLogo).getHttpUrl());
             footerRepo.save(footer);
             response.setData(footer);
             response.setMessage("Created");
@@ -69,7 +69,7 @@ public class FooterService
 
         Footer footer = footerRepo.findById(id).get();
         String oldLogoUrl = footer.getLogoUrl();
-        String oldCreatorLogoUrl = footer.getCreator().getLogoUrl();
+//        String oldCreatorLogoUrl = footer.getCreator().getLogoUrl();
 
         Footer newFooter = new Footer();
         try
@@ -84,7 +84,7 @@ public class FooterService
                 }
                 if (newCreatorLogo == null || newCreatorLogo.isEmpty())
                 {
-                    newFooter.getCreator().setLogoUrl(oldCreatorLogoUrl);
+//                    newFooter.getCreator().setLogoUrl(oldCreatorLogoUrl);
                 }
             } else
                 newFooter = footer;

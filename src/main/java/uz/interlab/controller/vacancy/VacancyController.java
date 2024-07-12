@@ -13,8 +13,6 @@ import uz.interlab.payload.vacancy.VacancyHeadDTO;
 import uz.interlab.service.vacancy.VacancyBodyService;
 import uz.interlab.service.vacancy.VacancyHeadService;
 import uz.interlab.entity.vacancy.Vacancy;
-import uz.interlab.entity.vacancy.VacancyDetails;
-import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.vacancy.VacancyDTO;
 import uz.interlab.payload.vacancy.VacancyDetailsDTO;
 import uz.interlab.service.vacancy.VacancyService;
@@ -128,7 +126,7 @@ public class VacancyController {
         return vacancyBodyService.deleteById(id);
     }
 
-  
+    // VACANCY ENTITY
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<Vacancy>> create(@RequestBody Vacancy vacancy)
     {
