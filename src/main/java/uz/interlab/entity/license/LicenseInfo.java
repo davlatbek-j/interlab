@@ -1,23 +1,31 @@
-package uz.interlab.entity;
-
+package uz.interlab.entity.license;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity(name = "application")
-public class Application {
+@Entity(name = "license_info")
+public class LicenseInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    List<String> usersInfo;
+    String titleUz;
+
+    String titleRu;
+
+    @Column(length = 1000)
+    String bodyUz;
+
+    @Column(length = 1000)
+    String bodyRu;
+
+    boolean active;
 
 }

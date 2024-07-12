@@ -50,5 +50,59 @@ public class AchievementService {
         return ResponseEntity.status(200).body(response);
     }
 
+    public ResponseEntity<ApiResponse<Achievement>> findById(Long id){
+        ApiResponse<Achievement> response=new ApiResponse<>();
+        Optional<Achievement> optionalAchievement = achievementRepository.findById(id);
+        if (optionalAchievement.isEmpty()){
+            response.setMessage("Achievement not found by id: "+id);
+            return ResponseEntity.status(404).body(response);
+        }
+        Achievement achievement = optionalAchievement.get();
+        response.setMessage("Found");
+        response.setData(achievement);
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<Achievement>> update(Long id, Achievement achievement){
+        ApiResponse<Achievement> response=new ApiResponse<>();
+        Optional<Achievement> optionalAchievement = achievementRepository.findById(id);
+        if (optionalAchievement.isEmpty()){
+            response.setMessage("Achievement not found by id: "+id);
+            return ResponseEntity.status(404).body(response);
+        }
+        Achievement oldAchievement = optionalAchievement.get();
+        oldAchievement.setTitleUz(achievement.getTitleUz());
+        oldAchievement.setTitleRu(achievement.getTitleRu());
+        oldAchievement.setDescriptionUz(achievement.getDescriptionUz());
+        oldAchievement.setDescriptionRu(achievement.getDescriptionRu());
+        Achievement save = achievementRepository.save(oldAchievement);
+        response.setData(save);
+        return ResponseEntity.status(201).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<?>> deleteById(Long id){
+        ApiResponse<?> response=new ApiResponse<>();
+        if (achievementRepository.findById(id).isEmpty()){
+            response.setMessage("Achievement not found by id: "+id);
+            return ResponseEntity.status(404).body(response);
+        }
+        achievementRepository.deleteById(id);
+        response.setMessage("Successfully deleted");
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<?>> changeActive(Long id){
+        ApiResponse<?> response=new ApiResponse<>();
+        Optional<Achievement> optionalAchievement = achievementRepository.findById(id);
+        if (optionalAchievement.isEmpty()){
+            response.setMessage("Achievement not found by id: "+id);
+            return ResponseEntity.status(404).body(response);
+        }
+        Achievement achievement = optionalAchievement.get();
+        boolean active=!achievement.isActive();
+        achievementRepository.changeActive(id,active);
+        response.setMessage("Successfully changed! Achievement active: "+active);
+        return ResponseEntity.status(200).body(response);
+    }
 
 }

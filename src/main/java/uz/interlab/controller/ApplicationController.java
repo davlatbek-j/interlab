@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.interlab.entity.Application;
 import uz.interlab.payload.ApiResponse;
-import uz.interlab.payload.ApplicationCreateDTO;
 import uz.interlab.service.ApplicationService;
 
 import java.util.List;
@@ -19,9 +18,9 @@ public class ApplicationController {
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<Application>> createApplication(
-            @RequestBody ApplicationCreateDTO createDTO
+            @RequestBody Application application
     ) {
-        return applicationService.create(createDTO);
+        return applicationService.create(application);
     }
 
     @GetMapping("/get/{id}")
@@ -34,14 +33,6 @@ public class ApplicationController {
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<Application>>> getAll() {
         return applicationService.findAll();
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse<Application>> updateApplication(
-            @PathVariable Long id,
-            @RequestBody ApplicationCreateDTO createDTO
-    ) {
-        return applicationService.update(id, createDTO);
     }
 
     @DeleteMapping("/delete/{id}")
