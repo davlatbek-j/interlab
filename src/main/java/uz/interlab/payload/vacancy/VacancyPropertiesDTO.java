@@ -1,44 +1,42 @@
-package uz.interlab.payload.instruction;
+package uz.interlab.payload.vacancy;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.instruction.Instruction;
+import uz.interlab.entity.vacancy.VacancyProperties;
 import uz.interlab.exception.LanguageNotSupportException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class InstructionMainDTO
+public class VacancyPropertiesDTO
 {
     Long id;
 
     String name;
 
-    String slug;
+    List<String> option;
 
-    boolean active;
-
-    boolean main;
-
-    public InstructionMainDTO(Instruction instruction, String lang)
+    public VacancyPropertiesDTO(VacancyProperties entity, String lang)
     {
-        this.id = instruction.getId();
-        this.slug = instruction.getSlug();
-        this.active = instruction.isActive();
-        this.main = instruction.isMain();
+        this.id = entity.getId();
+        this.option = new ArrayList<>();
         switch (lang.toLowerCase())
         {
             case "uz":
             {
-                this.name = instruction.getNameUz();
+                this.name = entity.getNameUz();
+                this.option.addAll(entity.getOptionUz());
                 break;
             }
             case "ru":
             {
-                this.name = instruction.getNameRu();
-                break;
+                this.name = entity.getNameRu();
+                this.option.addAll(entity.getOptionRu());
             }
             default:
                 throw new LanguageNotSupportException("Language not supported: " + lang);

@@ -1,35 +1,28 @@
-package uz.interlab.entity.instruction;
+package uz.interlab.entity.vacancy;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-
-@Entity(name = "instruction")
-public class Instruction
+@Entity
+public class VacancyProperties
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
     String nameUz;
-
     String nameRu;
 
-    @Column(unique = true)
-    String slug;
+    @ElementCollection
+    List<String> optionUz;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    InstructionDetails details;
-
-    boolean active;
-
-    boolean main;
+    @ElementCollection
+    List<String> optionRu;
 }

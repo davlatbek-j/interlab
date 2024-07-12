@@ -1,4 +1,4 @@
-package uz.interlab.entity.instruction;
+package uz.interlab.entity.sale;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -12,24 +12,23 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
-@Entity(name = "instruction")
-public class Instruction
+@Entity
+public class SaleDetails
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String nameUz;
-
-    String nameRu;
-
-    @Column(unique = true)
+    @Column(unique=true)
     String slug;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    InstructionDetails details;
+    String backgroundPhoto;
 
-    boolean active;
+    String icon;
 
-    boolean main;
+    @Column(length = 2000)
+    String textUz;
+
+    @Column(length = 2000)
+    String textRu;
 }
