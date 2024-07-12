@@ -55,15 +55,18 @@ public class InstructionController
             @PathVariable String slug,
             @RequestHeader(value = "Accept-Language") String lang)
     {
-        return instructionService.findDetailsBySlug(slug,lang);
+        return instructionService.findDetailsBySlug(slug, lang);
     }
 
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<InstructionMainDTO>>> getAll(
-            @RequestHeader(value = "Accept-Language") String lang)
+            @RequestHeader(value = "Accept-Language") String lang,
+            @RequestParam(value = "main", required = false, defaultValue = "all") String main,
+            @RequestParam(value = "active", required = false, defaultValue = "all") String active)
     {
-        return instructionService.findAll(lang);
+        return instructionService.findAll(lang, main, active);
     }
+
     @GetMapping("/details/get-all")
     public ResponseEntity<ApiResponse<List<InstructionDetailsDTO>>> getDetailsAll(
             @RequestHeader(value = "Accept-Language") String lang)
@@ -130,7 +133,7 @@ public class InstructionController
             @RequestParam(value = "json") String json,
             @RequestPart(value = "icon") MultipartFile icon)
     {
-        return instructionService.createHead(json,icon);
+        return instructionService.createHead(json, icon);
     }
 
 
@@ -144,10 +147,10 @@ public class InstructionController
     @PutMapping("/head/update/{id}")
     public ResponseEntity<ApiResponse<InstructionHead>> update(
             @PathVariable Long id,
-            @RequestParam(value = "json",required = false) String json,
-            @RequestPart(value = "icon",required = false) MultipartFile icon)
+            @RequestParam(value = "json", required = false) String json,
+            @RequestPart(value = "icon", required = false) MultipartFile icon)
     {
-        return instructionService.updateHead(id,json,icon);
+        return instructionService.updateHead(id, json, icon);
     }
 
     @DeleteMapping("/head/delete/{id}")

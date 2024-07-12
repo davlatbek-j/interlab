@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import uz.interlab.entity.instruction.Instruction;
 
+import java.util.List;
+
 @Repository
 public interface InstructionRepository extends JpaRepository<Instruction, Long>
 {
@@ -31,4 +33,7 @@ public interface InstructionRepository extends JpaRepository<Instruction, Long>
     @Query(value = "SELECT details_id FROM instruction WHERE id = :id", nativeQuery = true)
     Long findDetailsId(@Param("id") Long instructionId);
 
+    List<Instruction> findAllByActive(boolean active);
+
+    List<Instruction> findAllByMainAndActive(boolean main, boolean active);
 }

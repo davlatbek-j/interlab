@@ -59,13 +59,43 @@ public class InstructionService
         return ResponseEntity.status(200).body(response);
     }
 
-    public ResponseEntity<ApiResponse<List<InstructionMainDTO>>> findAll(String lang)
+    public ResponseEntity<ApiResponse<List<InstructionMainDTO>>> findAll(String lang, String main, String active)
     {
         ApiResponse<List<InstructionMainDTO>> response = new ApiResponse<>();
-        List<Instruction> all = instructionRepo.findAll();
+        List<Instruction> all = new ArrayList<>();
         response.setData(new ArrayList<>());
-        all.forEach(instruction -> response.getData().add(new InstructionMainDTO(instruction, lang)));
-        response.setMessage("Found " + all.size() + " Instruction(s)");
+        int size = 0;
+        switch (main.toLowerCase())
+        {
+            case "all":
+            {
+                if (active.equalsIgnoreCase("all"))
+                {
+                    all = instructionRepo.findAll();
+                    all.forEach(instruction -> response.getData().add(new InstructionMainDTO(instruction, lang)));
+                    size = all.size();
+                } else if (active.equalsIgnoreCase("true") || active.equalsIgnoreCase("false"))
+                {
+                    all = instructionRepo.findAllByActive(Boolean.parseBoolean(active));
+                    all.forEach(instruction -> response.getData().add(new InstructionMainDTO(instruction, lang)));
+                    size = all.size();
+                } else
+                    throw new IllegalArgumentException("'active' should be either 'all' or 'true' or 'false'");
+                break;
+            }
+            case "true":
+            case "false":
+            {
+                all = instructionRepo.findAllByMainAndActive(Boolean.parseBoolean(main), Boolean.parseBoolean(active));
+                all.forEach(instruction -> response.getData().add(new InstructionMainDTO(instruction, lang)));
+                size = all.size();
+                break;
+            }
+            default:
+                throw new IllegalArgumentException("'main' should be either 'all' or 'true' or 'false'");
+        }
+
+        response.setMessage("Found " + size + " Instruction(s)");
         return ResponseEntity.status(200).body(response);
     }
 

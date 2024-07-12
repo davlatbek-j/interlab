@@ -2,7 +2,7 @@ package uz.interlab.respository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import uz.interlab.entity.Sale;
+import uz.interlab.entity.sale.Sale;
 
 import java.util.List;
 
@@ -14,6 +14,9 @@ public interface SaleRepository extends JpaRepository<Sale, Long>
 
     List<Sale> findByMainAndActive(boolean main, boolean active);
 
-    @Query(value = "SELECT photo_url FROM sale WHERE id =:id", nativeQuery = true)
-    String findPhotoUrlById(Long id);
+
+    boolean existsBySlug(String slug);
+
+    @Query(value = "SELECT * FROM sale WHERE slug = :slug", nativeQuery = true)
+    Sale findBySlug(String slug);
 }

@@ -1,10 +1,7 @@
-package uz.interlab.entity;
+package uz.interlab.entity.sale;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,16 +20,20 @@ public class Sale
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(unique = true)
+    String slug;
+
     String nameUz;
     String nameRu;
-
-    String descriptionUz;
-    String descriptionRu;
 
     String timeUz;
     String timeRu;
 
-    String photoUrl;
+    String mainPhotoUz;
+    String mainPhotoRu;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    SaleDetails details;
 
     boolean main;
     boolean active;
