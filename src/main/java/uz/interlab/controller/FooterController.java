@@ -21,14 +21,16 @@ public class FooterController
     public ResponseEntity<ApiResponse<Footer>> create(
             @RequestParam("json") String json,
             @RequestPart("logo") MultipartFile logo,
-            @RequestPart("creator-icon") MultipartFile creatorLogo,
             @RequestPart("telegram-icon") MultipartFile tgIcon,
             @RequestPart("youtube-icon") MultipartFile youtubeIcon,
             @RequestPart("instagram-icon") MultipartFile instagramIcon,
+            @RequestPart("facebook-icon") MultipartFile facebookIcon,
+            @RequestPart("creator-icon") MultipartFile creatorIcon,
             @RequestPart(value = "meta-icon",required = false) MultipartFile meta)
     {
-//        return footerService.create(json, logo, creatorLogo, tgIconUrl, youtubeIconUrl, instaIconUrl);
-        return null;
+
+        return footerService.create(json, logo,tgIcon,youtubeIcon,instagramIcon,facebookIcon,creatorIcon );
+
     }
 
     @GetMapping("/get/{id}")
@@ -42,11 +44,17 @@ public class FooterController
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<Footer>> update(
             @PathVariable Long id,
-            @RequestParam(value = "json", required = false) String json,
-            @RequestPart(value = "logo", required = false) MultipartFile logo,
-            @RequestPart(value = "creator-logo", required = false) MultipartFile creatorLogo)
+            @RequestParam("json") String json,
+            @RequestPart("logo") MultipartFile logo,
+            @RequestPart("telegram-icon") MultipartFile tgIcon,
+            @RequestPart("youtube-icon") MultipartFile youtubeIcon,
+            @RequestPart("instagram-icon") MultipartFile instagramIcon,
+            @RequestPart("facebook-icon") MultipartFile facebookIcon,
+            @RequestPart("creator-icon") MultipartFile creatorIcon,
+            @RequestPart(value = "meta-icon",required = false) MultipartFile meta)
+
     {
-        return footerService.update(id, json, logo, creatorLogo);
+        return footerService.update(id, json, logo, tgIcon,youtubeIcon,instagramIcon,facebookIcon,creatorIcon);
     }
 
     @DeleteMapping("/delete/{id}")

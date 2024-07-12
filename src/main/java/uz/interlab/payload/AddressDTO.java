@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import uz.interlab.entity.Address;
+import uz.interlab.exception.LanguageNotSupportException;
 
 @Data
 @NoArgsConstructor
@@ -30,6 +31,9 @@ public class AddressDTO {
                 this.name=address.getNameRu();
                 this.location=address.getLocationRu();
                 this.workingTime=address.getWorkingTimeUz();
+            }
+            default -> {
+                throw new LanguageNotSupportException("Language not supported" + lang);
             }
         }
     }

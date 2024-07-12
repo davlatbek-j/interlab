@@ -14,41 +14,40 @@ import uz.interlab.respository.FooterRepository;
 @RequiredArgsConstructor
 
 @Service
-public class FooterService
-{
+public class FooterService {
     private final FooterRepository footerRepo;
     private final ObjectMapper jsonMapper;
     private final PhotoService photoService;
 
-    public ResponseEntity<ApiResponse<Footer>> create(String json, MultipartFile logo, MultipartFile creatorLogo,String tgIconUrl,String youtubeIconUrl,String instaIconUrl)
-    {
+    public ResponseEntity<ApiResponse<Footer>> create(String json, MultipartFile logo,
+                                                      MultipartFile tgIcon, MultipartFile youtubeIcon, MultipartFile instagramIcon,
+                                                      MultipartFile facebookIcon, MultipartFile creatorIcon) {
         ApiResponse<Footer> response = new ApiResponse<>();
-        try
-        {
+        try {
             Footer footer = jsonMapper.readValue(json, Footer.class);
             footer.setId(null);
-//            footer.setInstaIconUrl(instaIconUrl);
-//            footer.setTgIconUrl(tgIconUrl);
-            footer.setYoutubeIconUrl(youtubeIconUrl);
+            footer.setInstagramIconUrl(photoService.save(instagramIcon).getHttpUrl());
+            footer.setTelegramIconUrl(photoService.save(tgIcon).getHttpUrl());
+            footer.setYoutubeIconUrl(photoService.save(youtubeIcon).getHttpUrl());
+            footer.setFacebookIconUrl(photoService.save(facebookIcon).getHttpUrl());
+            footer.setCreatorIconUrl(photoService.save(creatorIcon).getHttpUrl());
             footer.setLogoUrl(photoService.save(logo).getHttpUrl());
-//            footer.getCreator().setLogoUrl(photoService.save(creatorLogo).getHttpUrl());
+
+            // footer.getCreator().setLogoUrl(photoService.save(creatorLogo).getHttpUrl());
             footerRepo.save(footer);
             response.setData(footer);
             response.setMessage("Created");
             return ResponseEntity.ok(response);
-        } catch (JsonProcessingException e)
-        {
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
             response.setMessage("Error on parsing json" + e.getMessage());
             return ResponseEntity.status(400).body(response);
         }
     }
 
-    public ResponseEntity<ApiResponse<FooterDTO>> findById(Long id, String lang)
-    {
+    public ResponseEntity<ApiResponse<FooterDTO>> findById(Long id, String lang) {
         ApiResponse<FooterDTO> response = new ApiResponse<>();
-        if (!footerRepo.existsById(id))
-        {
+        if (!footerRepo.existsById(id)) {
             response.setMessage("Footer not found by id " + id);
             return ResponseEntity.status(404).body(response);
         }
@@ -58,11 +57,10 @@ public class FooterService
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<ApiResponse<Footer>> update(Long id, String newJson, MultipartFile newLogo, MultipartFile newCreatorLogo)
-    {
+    public ResponseEntity<ApiResponse<Footer>> update(Long id, String newJson, MultipartFile newLogo, MultipartFile tgIcon, MultipartFile youtubeIcon, MultipartFile instagramIcon,
+                                                      MultipartFile facebookIcon, MultipartFile creatorIcon) {
         ApiResponse<Footer> response = new ApiResponse<>();
-        if (!footerRepo.existsById(id))
-        {
+        if (!footerRepo.existsById(id)) {
             response.setMessage("Footer not found by id " + id);
             return ResponseEntity.status(404).body(response);
         }
@@ -72,47 +70,68 @@ public class FooterService
 //        String oldCreatorLogoUrl = footer.getCreator().getLogoUrl();
 
         Footer newFooter = new Footer();
-        try
-        {
-            if (newJson != null)
-            {
+        try {
+            if (newJson != null) {
                 newFooter = jsonMapper.readValue(newJson, Footer.class);
                 newFooter.setId(null);
-                if (newLogo == null || newLogo.isEmpty())
-                {
-                    newFooter.setLogoUrl(oldLogoUrl);
-                }
-                if (newCreatorLogo == null || newCreatorLogo.isEmpty())
-                {
-//                    newFooter.getCreator().setLogoUrl(oldCreatorLogoUrl);
-                }
             } else
                 newFooter = footer;
 
-            if (newLogo != null && !newLogo.isEmpty())
-            {
+
+            if (newLogo == null || newLogo.isEmpty()) {
+                newFooter.setLogoUrl(oldLogoUrl);
+            }
+            else {
                 newFooter.setLogoUrl(photoService.save(newLogo).getHttpUrl());
             }
-            if (newCreatorLogo != null && !newCreatorLogo.isEmpty())
-            {
-                newFooter.setLogoUrl(photoService.save(newCreatorLogo).getHttpUrl());
+
+            if (tgIcon == null || tgIcon.isEmpty()) {
+                newFooter.setTelegramIconUrl(footer.getTelegramIconUrl());
+            }
+            else {
+                newFooter.setTelegramIconUrl(photoService.save(tgIcon).getHttpUrl());
+            }
+
+            if (youtubeIcon==null||youtubeIcon.isEmpty()){
+                newFooter.setYoutubeIconUrl(footer.getYoutubeIconUrl());
+            }
+            else {
+                newFooter.setYoutubeIconUrl(photoService.save(youtubeIcon).getHttpUrl());
+            }
+
+            if (instagramIcon==null||instagramIcon.isEmpty()){
+                newFooter.setInstagramIconUrl(footer.getInstagramIconUrl());
+            }
+            else {
+                newFooter.setInstagramIconUrl(photoService.save(instagramIcon).getHttpUrl());
+            }
+
+            if (facebookIcon==null||facebookIcon.isEmpty()){
+                newFooter.setFacebookIconUrl(footer.getFacebookIconUrl());
+            }
+            else {
+                newFooter.setFacebookIconUrl(photoService.save(facebookIcon).getHttpUrl());
+            }
+
+            if (creatorIcon==null||creatorIcon.isEmpty()){
+                newFooter.setCreatorIconUrl(footer.getCreatorIconUrl());
+            }
+            else {
+                newFooter.setCreatorIconUrl(photoService.save(creatorIcon).getHttpUrl());
             }
             response.setData(footerRepo.save(newFooter));
             response.setMessage("Updated");
             return ResponseEntity.ok(response);
-        } catch (JsonProcessingException e)
-        {
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
             response.setMessage("Error on parsing json" + e.getMessage());
             return ResponseEntity.status(400).body(response);
         }
     }
 
-    public ResponseEntity<ApiResponse<?>> delete(Long id)
-    {
+    public ResponseEntity<ApiResponse<?>> delete(Long id) {
         ApiResponse<Footer> response = new ApiResponse<>();
-        if (!footerRepo.existsById(id))
-        {
+        if (!footerRepo.existsById(id)) {
             response.setMessage("Footer not found by id " + id);
             return ResponseEntity.status(404).body(response);
         }
