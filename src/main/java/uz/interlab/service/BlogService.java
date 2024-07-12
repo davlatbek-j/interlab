@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -66,6 +69,16 @@ public class BlogService {
         response.setData(new ArrayList<>());
         all.forEach(blog -> response.getData().add(new BlogDTO(blog, lang)));
         response.setMessage("Found " + all.size() + " new(s)");
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<org.springframework.data.domain.Page<BlogDTO>>> findAllWithPagination(String lang, int page, int size) {
+        ApiResponse<org.springframework.data.domain.Page<BlogDTO>> response = new ApiResponse<>();
+        Pageable pageable = PageRequest.of(page-1, size);
+        org.springframework.data.domain.Page<Blog> all = blogRepository.findAll(pageable);
+        Page<BlogDTO> map = all.map(blog -> new BlogDTO(blog, lang));
+        response.setData(map);
+        response.setMessage("Found " + map.getTotalElements() + " blogs in total.");
         return ResponseEntity.status(200).body(response);
     }
 

@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("/address")
 public class AddressController {
     private final AddressService addressService;
+
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<Address>> createAddress(
             @RequestParam(value = "json") String address
@@ -38,11 +39,6 @@ public class AddressController {
         return addressService.findAll(lang);
     }
 
-    @GetMapping("/get-full-data/{id}")
-    public ResponseEntity<ApiResponse<Address>> getFullData(@PathVariable Long id) {
-        return addressService.findById(id);
-    }
-
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<Address>> updateNewness(
             @PathVariable Long id,
@@ -51,10 +47,27 @@ public class AddressController {
         return addressService.update(id, json);
     }
 
+    @PutMapping("/change-active/{id}")
+    public ResponseEntity<ApiResponse<?>> changeActive(@PathVariable Long id){
+        return addressService.changeActive(id);
+    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<?>> deleteNewness(@PathVariable Long id) {
         return addressService.deleteById(id);
+    }
+
+    @GetMapping("{slug}")
+    public ResponseEntity<ApiResponse<AddressDTO>> getBySlug(
+            @PathVariable String slug,
+            @RequestHeader(value = "Accept-Language") String lang
+    ) {
+        return addressService.findBySlug(slug, lang);
+    }
+
+    @GetMapping("/get-full-data/{slug}")
+    public ResponseEntity<ApiResponse<Address>> getFullDataBySlug(@PathVariable String slug) {
+        return addressService.findBySlug(slug);
     }
 
 }

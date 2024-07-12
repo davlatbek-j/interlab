@@ -9,19 +9,31 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
-@Entity
+@Entity(name = "address")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-     String nameUz;
-     String nameRu;
-     String locationUz;
-     String locationRu;
-     String workingTimeUz;
-     String WorkingTimeRu;
+
+    String nameUz;
+
+    String nameRu;
+
+    String locationUz;
+
+    String locationRu;
+
+    List<String> workingTimeUz;
+
+    List<String> workingTimeRu;
+
+    String slug;
+
+    boolean active;
 }

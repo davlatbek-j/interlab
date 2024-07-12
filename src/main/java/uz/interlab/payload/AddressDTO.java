@@ -6,20 +6,30 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import uz.interlab.entity.Address;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AddressDTO {
+
     Long id;
+
     String name;
 
     String location;
 
-    String workingTime;
+    List<String> workingTime;
+
+    String slug;
+
+    boolean active;
 
 
     public AddressDTO(Address address,String lang){
         this.id=address.getId();
+        this.slug=address.getSlug();
+        this.active=address.isActive();
         switch (lang.toLowerCase()){
             case "uz" ->{
                 this.name=address.getNameUz();
