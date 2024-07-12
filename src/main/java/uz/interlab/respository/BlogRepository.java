@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import uz.interlab.entity.blog.Blog;
 
+import java.util.Optional;
+
 @Repository
 public interface BlogRepository extends JpaRepository<Blog, Long> {
 
@@ -25,5 +27,7 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
 
     @Query(value = "SELECT slug FROM blog WHERE id = :id", nativeQuery = true)
     String findSlugById(@Param("id") Long blogId);
+
+    Optional<Blog> findBySlug(String slug);
 
 }
