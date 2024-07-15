@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +19,8 @@ import uz.interlab.util.SlugUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -66,6 +71,44 @@ public class BlogService {
         response.setData(new ArrayList<>());
         all.forEach(blog -> response.getData().add(new BlogDTO(blog, lang)));
         response.setMessage("Found " + all.size() + " new(s)");
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<BlogDTO>> findBySlug(String slug, String lang){
+        ApiResponse<BlogDTO> response=new ApiResponse<>();
+        Optional<Blog> optionalBlog = blogRepository.findBySlug(slug);
+        if (optionalBlog.isEmpty()) {
+            response.setMessage("Blog not found by slug: "+slug);
+            return ResponseEntity.status(404).body(response);
+        }
+        Blog blog = optionalBlog.get();
+        response.setMessage("Found");
+        response.setData(new BlogDTO(blog,lang));
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<List<BlogDTO>>> findFourBlog(String slug, String lang){
+        ApiResponse<List<BlogDTO>> response = new ApiResponse<>();
+        if (blogRepository.findBySlug(slug).isEmpty()){
+            response.setMessage("Blog not found by slug: "+slug);
+            return ResponseEntity.status(404).body(response);
+        }
+        List<Blog> allBlogs = blogRepository.findAll();
+        response.setData(new ArrayList<>());
+        List<Blog> filterBlogs = allBlogs.stream().filter(blog -> !blog.getSlug().equals(slug)).toList();
+        List<Blog> selectedBlogs = filterBlogs.stream().limit(4).toList();
+        selectedBlogs.forEach(blog -> response.getData().add(new BlogDTO(blog,lang)));
+        response.setMessage("Found "+selectedBlogs.size()+" new(s)");
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<org.springframework.data.domain.Page<BlogDTO>>> findAllWithPagination(String lang, int page, int size) {
+        ApiResponse<org.springframework.data.domain.Page<BlogDTO>> response = new ApiResponse<>();
+        Pageable pageable = PageRequest.of(page-1, size);
+        org.springframework.data.domain.Page<Blog> all = blogRepository.findAll(pageable);
+        Page<BlogDTO> map = all.map(blog -> new BlogDTO(blog, lang));
+        response.setData(map);
+        response.setMessage("Found " + map.getTotalElements() + " blogs in total.");
         return ResponseEntity.status(200).body(response);
     }
 

@@ -41,6 +41,15 @@ public class BlogController {
         return blogService.findAll(lang);
     }
 
+    @GetMapping("/get-all-page")
+    public ResponseEntity<ApiResponse<org.springframework.data.domain.Page<BlogDTO>>> getAllWithPageNation(
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size", required = false, defaultValue = "12") Integer size,
+            @RequestHeader(value = "Accept-Language") String lang
+    ) {
+        return blogService.findAllWithPagination(lang, page, size);
+    }
+
     @GetMapping("/get-full-data/{id}")
     public ResponseEntity<ApiResponse<Blog>> getFullData(@PathVariable Long id) {
         return blogService.findById(id);
@@ -65,4 +74,19 @@ public class BlogController {
         return blogService.deleteById(id);
     }
 
+    @GetMapping("/get-four/{slug}")
+    public ResponseEntity<ApiResponse<List<BlogDTO>>> findFourBlogs(
+            @PathVariable String slug,
+            @RequestHeader(value = "Accept-Language") String lang
+    ) {
+        return blogService.findFourBlog(slug, lang);
+    }
+
+    @GetMapping("/get-blog/{slug}")
+    public ResponseEntity<ApiResponse<BlogDTO>> findBySlug(
+            @PathVariable String slug,
+            @RequestHeader(value = "Accept-Language") String lang
+    ){
+        return blogService.findBySlug(slug, lang);
+    }
 }
