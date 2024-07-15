@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.user.AuthResponse;
 import uz.interlab.payload.user.Login;
+import uz.interlab.payload.user.ResetPassword;
 import uz.interlab.respository.UserRepository;
 import uz.interlab.security.JwtTokenService;
 import uz.interlab.security.User;
+import uz.interlab.sms.SmsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,19 +19,21 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
-
+public class UserService
+{
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final JwtTokenService tokenService;
+    private final SmsUtil smsUtil;
 
-    public ResponseEntity<ApiResponse<?>> login(Login login) {
+    public ResponseEntity<ApiResponse<?>> login(Login login)
+    {
         ApiResponse<AuthResponse> response = new ApiResponse<>();
         User byPhoneNumber = userRepository.findByPhoneNumber(login.phoneNumber());
-        if (byPhoneNumber != null) {
-            if (passwordEncoder.matches(login.password(), byPhoneNumber.getPassword())) {
+        if (byPhoneNumber != null)
+        {
+            if (passwordEncoder.matches(login.password(), byPhoneNumber.getPassword()))
+            {
                 response.setMessage("Success");
                 response.setData(new AuthResponse(tokenService.generateToken(login.phoneNumber())));
                 return ResponseEntity.status(200).body(response);
@@ -39,9 +43,18 @@ public class UserService {
         return ResponseEntity.status(401).body(response);
     }
 
-    public ResponseEntity<ApiResponse<User>> create(User user) {
+    public ResponseEntity<ApiResponse<User>> create(User user, Integer sms)
+    {
         ApiResponse<User> response = new ApiResponse<>();
-        if (checkPhoneNumber(user.getPhoneNumber())) {
+        if (!smsUtil.match(user.getPhoneNumber(), sms))
+        {
+            response.setMessage("Incorrect or expired sms code");
+            return ResponseEntity.status(401).body(response);
+        }
+        smsUtil.clear(user.getPhoneNumber());
+
+        if (checkPhoneNumber(user.getPhoneNumber()))
+        {
             response.setMessage("Phone number is already exists. Please enter other phone number");
             return ResponseEntity.status(409).body(response);
         }
@@ -51,10 +64,12 @@ public class UserService {
         return ResponseEntity.status(201).body(response);
     }
 
-    public ResponseEntity<ApiResponse<User>> findById(Long id) {
+    public ResponseEntity<ApiResponse<User>> findById(Long id)
+    {
         ApiResponse<User> response = new ApiResponse<>();
         Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isEmpty()) {
+        if (optionalUser.isEmpty())
+        {
             response.setMessage("User not found by id: " + id);
             return ResponseEntity.status(404).body(response);
         }
@@ -64,7 +79,8 @@ public class UserService {
         return ResponseEntity.status(200).body(response);
     }
 
-    public ResponseEntity<ApiResponse<List<User>>> findAll() {
+    public ResponseEntity<ApiResponse<List<User>>> findAll()
+    {
         ApiResponse<List<User>> response = new ApiResponse<>();
         List<User> all = userRepository.findAll();
         response.setData(new ArrayList<>());
@@ -73,14 +89,17 @@ public class UserService {
         return ResponseEntity.status(200).body(response);
     }
 
-    public ResponseEntity<ApiResponse<User>> update(Long id, User user) {
+    public ResponseEntity<ApiResponse<User>> update(Long id, User user)
+    {
         ApiResponse<User> response = new ApiResponse<>();
         Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isEmpty()) {
+        if (optionalUser.isEmpty())
+        {
             response.setMessage("User not found by id: " + id);
             return ResponseEntity.status(404).body(response);
         }
-        if (checkPhoneNumber(user.getPhoneNumber())){
+        if (checkPhoneNumber(user.getPhoneNumber()))
+        {
             response.setMessage("Phone number is already exists. Please enter other phone number");
             return ResponseEntity.status(409).body(response);
         }
@@ -94,9 +113,11 @@ public class UserService {
         return ResponseEntity.status(200).body(response);
     }
 
-    public ResponseEntity<ApiResponse<?>> deleteById(Long id) {
+    public ResponseEntity<ApiResponse<?>> deleteById(Long id)
+    {
         ApiResponse<?> response = new ApiResponse<>();
-        if (userRepository.findById(id).isEmpty()) {
+        if (userRepository.findById(id).isEmpty())
+        {
             response.setMessage("User not found by id: " + id);
             return ResponseEntity.status(404).body(response);
         }
@@ -105,8 +126,30 @@ public class UserService {
         return ResponseEntity.status(200).body(response);
     }
 
-    private boolean checkPhoneNumber(String phoneNumber) {
+    private boolean checkPhoneNumber(String phoneNumber)
+    {
         return userRepository.existsByPhoneNumber(phoneNumber);
     }
 
+    public ResponseEntity<ApiResponse<?>> sendSms(String phone)
+    {
+        ApiResponse<?> response = new ApiResponse<>();
+        smsUtil.sendSms(phone, "4546");
+        response.setMessage("Confirmation code send , after 60 seconds otp code expired!");
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<?>> setNewPassword(ResetPassword resetPassword, Integer sms)
+    {
+        ApiResponse<?> response = new ApiResponse<>();
+        if (!smsUtil.match(resetPassword.phone(), sms))
+        {
+            response.setMessage("Incorrect or expired sms code");
+            return ResponseEntity.status(401).body(response);
+        }
+        userRepository.updatePassword(passwordEncoder.encode(resetPassword.newPassword()), resetPassword.phone());
+        response.setMessage("Password updated");
+        smsUtil.clear(resetPassword.phone());
+        return ResponseEntity.status(200).body(response);
+    }
 }

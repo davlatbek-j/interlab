@@ -1,6 +1,5 @@
 package uz.interlab.controller;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestHeaderException;
@@ -10,6 +9,7 @@ import uz.interlab.exception.IllegalPhotoTypeException;
 import uz.interlab.exception.LanguageNotSupportException;
 import uz.interlab.exception.PhotoNotFoundExcpetion;
 import uz.interlab.payload.ApiResponse;
+import uz.interlab.exception.LotOfEffortInMinuteException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler
@@ -40,6 +40,12 @@ public class GlobalExceptionHandler
 
     @ExceptionHandler(MissingRequestHeaderException.class)
     public ResponseEntity<ApiResponse<?>> handleMissingRequestHeaderException(MissingRequestHeaderException ex)
+    {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(ex.getMessage(), null));
+    }
+
+    @ExceptionHandler(LotOfEffortInMinuteException.class)
+    public ResponseEntity<ApiResponse<?>> handleLotOfEffortInMinuteException(LotOfEffortInMinuteException ex)
     {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(ex.getMessage(), null));
     }
