@@ -93,14 +93,14 @@ public class AboutUsPageService {
         try {
             if (newJson != null) {
                 newAboutUsPage = objectMapper.readValue(newJson, AboutUsPage.class);
-                if (newPhotoFiles == null || !(newPhotoFiles.isEmpty())) {
+                if (newPhotoFiles == null || newPhotoFiles.isEmpty()) {
                     newAboutUsPage.setPhotoUrls(oldPhotoUrls);
                 }
                 newAboutUsPage.setId(id);
             } else {
                 newAboutUsPage = aboutUsPageRepository.findById(id).get();
             }
-            if (newPhotoFiles != null && newPhotoFiles.isEmpty()) {
+            if (newPhotoFiles != null && !newPhotoFiles.isEmpty()) {
                 newAboutUsPage.setPhotoUrls(new ArrayList<>());
                 for (MultipartFile multipartFile : newPhotoFiles) {
                     newAboutUsPage.getPhotoUrls().add(photoService.save(multipartFile).getHttpUrl());
