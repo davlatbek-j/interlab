@@ -24,20 +24,21 @@ public class Footer
     String logoUrl;
 
     String telegramUrl;
-
     String instagramUrl;
     String youtubeUrl;
     String facebookUrl;
+    String creatorUrl; // examle: https://result-me.uz
 
-    String tgIconUrl;
+    String telegramIconUrl;
+    String instagramIconUrl;// example : http://localhost:8080/photo/instagram.png shu urlga reqaust yuborilsa rasm qaytishi kerak
     String youtubeIconUrl;
-    String instaIconUrl;
+    String facebookIconUrl;
+    String creatorIconUrl;
 
     @OneToMany(cascade = CascadeType.ALL)
     List<FooterOption> footerOption;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    Creator creator;
+    String copyright;
 
     boolean active;
 }

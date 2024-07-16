@@ -49,7 +49,7 @@ public class FooterDTO
         this.instagramUrl = entity.getInstagramUrl();
         this.youtubeUrl = entity.getYoutubeUrl();
         this.facebookUrl = entity.getFacebookUrl();
-        this.creator = entity.getCreator();
+//        this.creator = entity.getCreator();
         this.active = entity.isActive();
         this.option = new ArrayList<>();
         entity.getFooterOption().forEach(i -> this.option.add(new FooterOptionDTO(i, lang)));
