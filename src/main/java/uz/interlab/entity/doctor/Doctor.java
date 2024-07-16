@@ -39,6 +39,6 @@ public class Doctor
 
     boolean active;
 
-    @JsonIgnore
-    Long detailsId;
+    @OneToOne(cascade = CascadeType.ALL)
+    DoctorDetails details;
 }

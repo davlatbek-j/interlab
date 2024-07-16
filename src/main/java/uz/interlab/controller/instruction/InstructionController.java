@@ -7,12 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import uz.interlab.entity.instruction.Instruction;
 import uz.interlab.entity.instruction.InstructionHead;
+import uz.interlab.entity.instruction.InstructionMainTitle;
 import uz.interlab.entity.instruction.Recommendation;
 import uz.interlab.payload.ApiResponse;
-import uz.interlab.payload.instruction.InstructionDetailsDTO;
-import uz.interlab.payload.instruction.InstructionHeadDTO;
-import uz.interlab.payload.instruction.InstructionMainDTO;
-import uz.interlab.payload.instruction.RecommendationDTO;
+import uz.interlab.payload.instruction.*;
 import uz.interlab.service.InstructionService;
 
 import java.util.List;
@@ -27,8 +25,7 @@ public class InstructionController
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<Instruction>> createInstruction(
-            @RequestBody Instruction instruction
-    )
+            @RequestBody Instruction instruction)
     {
         return instructionService.create(instruction);
     }
@@ -67,12 +64,12 @@ public class InstructionController
         return instructionService.findAll(lang, main, active);
     }
 
-    @GetMapping("/details/get-all")
+    /*@GetMapping("/details/get-all")
     public ResponseEntity<ApiResponse<List<InstructionDetailsDTO>>> getDetailsAll(
             @RequestHeader(value = "Accept-Language") String lang)
     {
         return instructionService.findDetailsAll(lang);
-    }
+    }*/
 
     @GetMapping("/get-full-data/{slug}")
     public ResponseEntity<ApiResponse<Instruction>> getFullData(@PathVariable String slug)
@@ -83,8 +80,7 @@ public class InstructionController
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<Instruction>> updateNewness(
             @PathVariable Long id,
-            @RequestBody Instruction instruction
-    )
+            @RequestBody Instruction instruction)
     {
         return instructionService.update(id, instruction);
     }
@@ -94,6 +90,34 @@ public class InstructionController
     {
         return instructionService.deleteById(id);
     }
+
+    @PostMapping("/main-title/create")
+    public ResponseEntity<ApiResponse<InstructionMainTitle>> createMainTitle(
+            @RequestBody InstructionMainTitle mainTitle)
+    {
+        return instructionService.createMainTitle(mainTitle);
+    }
+
+    @GetMapping("/main-title")
+    public ResponseEntity<ApiResponse<InstructionMainTitleDTO>> getMainTitle(
+            @RequestHeader(value = "Accept-Language") String lang)
+    {
+        return instructionService.getMainTitle(lang);
+    }
+
+    @PutMapping("/main-title/update")
+    public ResponseEntity<ApiResponse<InstructionMainTitle>> updateMainTitle(
+            @RequestBody InstructionMainTitle newMainTitle)
+    {
+        return instructionService.createMainTitle(newMainTitle);
+    }
+
+    @DeleteMapping("/main-title/delete")
+    public ResponseEntity<ApiResponse<?>> deleteMainTitle()
+    {
+        return instructionService.deleteMainTitle();
+    }
+
 
     @PutMapping("/change-active/{id}")
     public ResponseEntity<ApiResponse<?>> changeActive(@PathVariable Long id)
@@ -136,27 +160,25 @@ public class InstructionController
         return instructionService.createHead(json, icon);
     }
 
-
-    @GetMapping("/head/get-all")
-    public ResponseEntity<ApiResponse<List<InstructionHeadDTO>>> getAllHead(
+    @GetMapping("/head")
+    public ResponseEntity<ApiResponse<InstructionHeadDTO>> getHead(
             @RequestHeader(value = "Accept-Language") String lang)
     {
-        return instructionService.getAllHead(lang);
+        return instructionService.getHead(lang);
     }
 
-    @PutMapping("/head/update/{id}")
+    @PutMapping("/head/update")
     public ResponseEntity<ApiResponse<InstructionHead>> update(
-            @PathVariable Long id,
             @RequestParam(value = "json", required = false) String json,
             @RequestPart(value = "icon", required = false) MultipartFile icon)
     {
-        return instructionService.updateHead(id, json, icon);
+        return instructionService.updateHead(json, icon);
     }
 
-    @DeleteMapping("/head/delete/{id}")
-    public ResponseEntity<ApiResponse<?>> deleteHead(@PathVariable Long id)
+    @DeleteMapping("/head/delete")
+    public ResponseEntity<ApiResponse<?>> deleteHead()
     {
-        return instructionService.deleteHead(id);
+        return instructionService.deleteHead();
     }
 
 }

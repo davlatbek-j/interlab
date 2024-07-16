@@ -7,14 +7,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import uz.interlab.entity.Address;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AddressRepository extends JpaRepository<Address,Long> {
+public interface AddressRepository extends JpaRepository<Address, Long>
+{
 
     @Modifying
     @Query(value = "update address set active=:active where id=:id", nativeQuery = true)
-    void changeActive(@Param("id")Long id, boolean active);
+    void changeActive(@Param("id") Long id, boolean active);
 
     @Modifying
     @Query(value = "UPDATE address SET slug = :slug WHERE id = :id", nativeQuery = true)
@@ -25,4 +27,9 @@ public interface AddressRepository extends JpaRepository<Address,Long> {
 
     Optional<Address> findBySlug(String slug);
 
+    List<Address> findAllByActive(boolean active);
+
+    List<Address> findAllByMain(boolean main);
+
+    List<Address> findAllByMainAndActive(boolean main, boolean active);
 }

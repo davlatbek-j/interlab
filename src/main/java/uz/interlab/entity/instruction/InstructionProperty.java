@@ -1,9 +1,6 @@
 package uz.interlab.entity.instruction;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +23,9 @@ public class InstructionProperty
 
     String nameRu;
 
+    @Column(length = 1000)
     String textUz;
 
+    @Column(length = 1000)
     String textRu;
 }

@@ -11,6 +11,7 @@ import uz.interlab.entity.Photo;
 import uz.interlab.entity.doctor.Doctor;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.doctor.DoctorDTO;
+import uz.interlab.payload.doctor.DoctorDetailsDTO;
 import uz.interlab.respository.DoctorRepository;
 import uz.interlab.service.PhotoService;
 import uz.interlab.util.SlugUtil;
@@ -204,4 +205,17 @@ public class DoctorService
         return ResponseEntity.status(200).body(response);
     }
 
+    public ResponseEntity<ApiResponse<DoctorDetailsDTO>> getDetails(String slug, String lang)
+    {
+        ApiResponse<DoctorDetailsDTO> response = new ApiResponse<>();
+        if (!doctorRepo.existsBySlug(slug))
+        {
+            response.setMessage("Doctor not found by slug: " + slug);
+            return ResponseEntity.status(404).body(response);
+        }
+        Doctor doctor = doctorRepo.findBySlug(slug);
+        response.setMessage("Found");
+        response.setData(new DoctorDetailsDTO(doctor, lang));
+        return ResponseEntity.status(200).body(response);
+    }
 }

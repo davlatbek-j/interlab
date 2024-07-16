@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.doctor.DoctorDetails;
+import uz.interlab.entity.doctor.Doctor;
 import uz.interlab.entity.enums.Gender;
 import uz.interlab.exception.LanguageNotSupportException;
 
@@ -41,37 +41,37 @@ public class DoctorDetailsDTO
 
     boolean active;
 
-    public DoctorDetailsDTO(DoctorDetails entity, String lang)
+    public DoctorDetailsDTO(Doctor entity, String lang)
     {
-        this.doctorId = entity.getDoctor().getId();
+        this.doctorId = entity.getId();
         this.slug = entity.getSlug();
-        this.gender = entity.getGender();
-        this.active = entity.getDoctor().isActive();
-        this.main = entity.getDoctor().isMain();
-        this.photoUrl = entity.getDoctor().getPhotoUrl();
+        this.gender = entity.getDetails().getGender();
+        this.active = entity.isActive();
+        this.main = entity.isMain();
+        this.photoUrl = entity.getPhotoUrl();
 
         switch (lang.toLowerCase())
         {
             case "uz":
             {
-                this.fullName = entity.getDoctor().getFullNameUz();
-                this.speciality = entity.getDoctor().getSpecialityUz();
-                this.schedule = entity.getScheduleUz();
-                this.experience = entity.getExperienceUz();
-                this.education = entity.getEducationUz();
-                this.language = entity.getLanguageUz();
-                this.achievement = entity.getAchievementUz();
+                this.fullName = entity.getFullNameUz();
+                this.speciality = entity.getSpecialityUz();
+                this.schedule = entity.getDetails().getScheduleUz();
+                this.experience = entity.getDetails().getExperienceUz();
+                this.education = entity.getDetails().getEducationUz();
+                this.language = entity.getDetails().getLanguageUz();
+                this.achievement = entity.getDetails().getAchievementUz();
                 break;
             }
             case "ru":
             {
-                this.fullName = entity.getDoctor().getFullNameRu();
-                this.speciality = entity.getDoctor().getSpecialityRu();
-                this.schedule = entity.getScheduleRu();
-                this.experience = entity.getExperienceRu();
-                this.education = entity.getEducationRu();
-                this.language = entity.getLanguageRu();
-                this.achievement = entity.getAchievementRu();
+                this.fullName = entity.getFullNameRu();
+                this.speciality = entity.getSpecialityRu();
+                this.schedule = entity.getDetails().getScheduleRu();
+                this.experience = entity.getDetails().getExperienceRu();
+                this.education = entity.getDetails().getEducationRu();
+                this.language = entity.getDetails().getLanguageRu();
+                this.achievement = entity.getDetails().getAchievementRu();
                 break;
             }
             default:

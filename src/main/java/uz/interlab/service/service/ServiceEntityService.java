@@ -7,8 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import uz.interlab.entity.service.Service;
+import uz.interlab.entity.service.ServiceHead;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.service.ServiceDTO;
+import uz.interlab.payload.service.ServiceDetailsDTO;
+import uz.interlab.payload.service.ServiceHeadDTO;
+import uz.interlab.respository.ServiceHeadRepository;
 import uz.interlab.respository.ServiceRepository;
 import uz.interlab.service.PhotoService;
 import uz.interlab.util.SlugUtil;
@@ -24,6 +28,7 @@ public class ServiceEntityService
     private final ServiceRepository serviceRepo;
     private final ObjectMapper jsonMapper;
     private final PhotoService photoService;
+    private final ServiceHeadRepository headRepo;
 
     public ResponseEntity<ApiResponse<Service>> create(String json, MultipartFile photo)
     {
@@ -168,6 +173,127 @@ public class ServiceEntityService
         Service bySlug = serviceRepo.findBySlug(slug);
         response.setMessage("Found");
         response.setData(bySlug);
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<ServiceDetailsDTO>> findDetails(String slug, String lang)
+    {
+        ApiResponse<ServiceDetailsDTO> response = new ApiResponse<>();
+        if (!serviceRepo.existsBySlug(slug))
+        {
+            response.setMessage("Service not found by slug:" + slug);
+            return ResponseEntity.status(404).body(response);
+        }
+        Service bySlug = serviceRepo.findBySlug(slug);
+        response.setMessage("Found");
+        response.setData(new ServiceDetailsDTO(bySlug, lang));
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<ServiceHead>> createHead(String json, List<MultipartFile> gallery)
+    {
+        ApiResponse<ServiceHead> response = new ApiResponse<>();
+
+        try
+        {
+            ServiceHead serviceHead = jsonMapper.readValue(json, ServiceHead.class);
+            serviceHead.setGallery(new ArrayList<>());
+            gallery.forEach(i -> serviceHead.getGallery().add(photoService.save(i).getHttpUrl()));
+            response.setMessage("Created");
+
+            if (headRepo.findAll().isEmpty())
+                response.setData(headRepo.save(serviceHead));
+            else
+            {
+                serviceHead.setId(headRepo.findAll().get(0).getId());
+                response.setData(headRepo.save(serviceHead));
+            }
+
+            return ResponseEntity.status(200).body(response);
+        } catch (JsonProcessingException e)
+        {
+            response.setMessage("Error parsing json" + e.getMessage());
+            return ResponseEntity.status(400).body(response);
+        }
+
+    }
+
+    public ResponseEntity<ApiResponse<ServiceHeadDTO>> getHead(String lang)
+    {
+        ApiResponse<ServiceHeadDTO> response = new ApiResponse<>();
+        if (headRepo.findAll().isEmpty())
+        {
+            response.setMessage("Head is null");
+            return ResponseEntity.status(404).body(response);
+        }
+        ServiceHead serviceHead = headRepo.findAll().get(0);
+        response.setMessage("Found");
+        response.setData(new ServiceHeadDTO(serviceHead, lang));
+        return ResponseEntity.ok(response);
+    }
+
+    public ResponseEntity<ApiResponse<ServiceHead>> updateHead(String json, List<MultipartFile> gallery)
+    {
+        ApiResponse<ServiceHead> response = new ApiResponse<>();
+        List<ServiceHead> all = headRepo.findAll();
+        if (all.isEmpty())
+        {
+            response.setMessage("Head is null");
+            return ResponseEntity.status(404).body(response);
+        }
+        ServiceHead serviceHead = all.get(0);
+        Long id = serviceHead.getId();
+        List<String> oldGallery = serviceHead.getGallery();
+        if (json != null)
+        {
+            try
+            {
+                serviceHead = jsonMapper.readValue(json, ServiceHead.class);
+                serviceHead.setId(id);
+                serviceHead.setGallery(oldGallery);
+            } catch (JsonProcessingException e)
+            {
+                response.setMessage("Error parsing json" + e.getMessage());
+                return ResponseEntity.status(400).body(response);
+            }
+        }
+
+        if (gallery != null)
+        {
+            List<String> galleryUrls = new ArrayList<>();
+            gallery.forEach(i -> galleryUrls.add(photoService.save(i).getHttpUrl()));
+            serviceHead.setGallery(galleryUrls);
+        }
+        response.setMessage("Updated");
+        response.setData(headRepo.save(serviceHead));
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<?>> deleteHead()
+    {
+        ApiResponse<?> response = new ApiResponse<>();
+        List<ServiceHead> all = headRepo.findAll();
+        if (all.isEmpty())
+        {
+            response.setMessage("Head is null");
+            return ResponseEntity.status(404).body(response);
+        }
+        headRepo.deleteById(all.get(0).getId());
+        response.setMessage("Deleted");
+        return ResponseEntity.status(200).body(response);
+    }
+
+    public ResponseEntity<ApiResponse<ServiceHead>> getFullDataHead()
+    {
+        ApiResponse<ServiceHead> response = new ApiResponse<>();
+        List<ServiceHead> all = headRepo.findAll();
+        if (all.isEmpty())
+        {
+            response.setMessage("Head is null");
+            return ResponseEntity.status(404).body(response);
+        }
+        response.setMessage("Found");
+        response.setData(all.get(0));
         return ResponseEntity.status(200).body(response);
     }
 }

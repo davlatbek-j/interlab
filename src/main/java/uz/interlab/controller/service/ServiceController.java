@@ -6,8 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import uz.interlab.entity.service.Service;
+import uz.interlab.entity.service.ServiceHead;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.service.ServiceDTO;
+import uz.interlab.payload.service.ServiceDetailsDTO;
+import uz.interlab.payload.service.ServiceHeadDTO;
 import uz.interlab.service.service.ServiceEntityService;
 
 import java.util.List;
@@ -45,6 +48,15 @@ public class ServiceController
         return entityService.findBySlug(slug, lang);
     }
 
+    @GetMapping("/details/{slug}")
+    public ResponseEntity<ApiResponse<ServiceDetailsDTO>> getDetails(
+            @PathVariable String slug,
+            @RequestHeader(value = "Accept-Language") String lang)
+    {
+        return entityService.findDetails(slug, lang);
+    }
+
+
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<ServiceDTO>>> getAll(
             @RequestHeader(value = "Accept-Language") String lang)
@@ -55,7 +67,6 @@ public class ServiceController
     @GetMapping("/get-full-data/{slug}")
     public ResponseEntity<ApiResponse<Service>> getFullData(@PathVariable String slug)
     {
-        System.err.println("slug = " + slug);
         return entityService.findBySlug(slug);
     }
 
@@ -74,5 +85,40 @@ public class ServiceController
         return entityService.deleteById(id);
     }
 
+    // Service HEAD
+    @PostMapping("/head/create")
+    public ResponseEntity<ApiResponse<ServiceHead>> createHead(
+            @RequestParam(value = "json") String json,
+            @RequestPart(value = "gallery") List<MultipartFile> gallery)
+    {
+        return entityService.createHead(json, gallery);
+    }
+
+    @GetMapping("/head")
+    public ResponseEntity<ApiResponse<ServiceHeadDTO>> getHead(
+            @RequestHeader(value = "Accept-Language") String lang)
+    {
+        return entityService.getHead(lang);
+    }
+
+    @GetMapping("/head/full-data")
+    public ResponseEntity<ApiResponse<ServiceHead>> getHeadFullData()
+    {
+        return entityService.getFullDataHead();
+    }
+
+    @PutMapping("/head/update")
+    public ResponseEntity<ApiResponse<ServiceHead>> updateHead(
+            @RequestParam(value = "json", required = false) String json,
+            @RequestPart(value = "gallery", required = false) List<MultipartFile> gallery)
+    {
+        return entityService.updateHead(json, gallery);
+    }
+
+    @DeleteMapping("/head/delete")
+    public ResponseEntity<ApiResponse<?>> deleteHead()
+    {
+        return entityService.deleteHead();
+    }
 
 }

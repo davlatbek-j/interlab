@@ -1,6 +1,5 @@
 package uz.interlab.entity.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -38,8 +37,8 @@ public class Service
 
     String colourCode;
 
-    @JsonIgnore
-    Long detailsId;
+    @OneToOne(cascade = CascadeType.ALL)
+    ServiceDetails details;
 
     boolean active;
 

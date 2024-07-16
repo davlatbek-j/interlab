@@ -1,47 +1,42 @@
-package uz.interlab.payload.service;
+package uz.interlab.payload.instruction;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.service.Service;
+import uz.interlab.entity.instruction.InstructionMainTitle;
 import uz.interlab.exception.LanguageNotSupportException;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ServiceDetailsDTO
+public class InstructionMainTitleDTO
 {
-    Long serviceId;
+    Long id;
 
-    String slug;
-
-    String name;
+    String title;
 
     String description;
 
-    String text;
+    String warning;
 
-    public ServiceDetailsDTO(Service entity, String lang)
+    public InstructionMainTitleDTO(InstructionMainTitle entity, String lang)
     {
-        this.serviceId = entity.getId();
-        this.slug = entity.getSlug();
+        this.id = entity.getId();
         switch (lang.toLowerCase())
         {
             case "uz":
             {
-                this.name = entity.getNameUz();
+                this.title = entity.getTitleUz();
                 this.description = entity.getDescriptionUz();
-                this.text = entity.getDetails().getTextUz();
+                this.warning = entity.getWarningUz();
                 break;
             }
             case "ru":
             {
-                this.name = entity.getNameRu();
+                this.title = entity.getTitleRu();
                 this.description = entity.getDescriptionRu();
-                this.text = entity.getDetails().getTextRu();
+                this.warning = entity.getWarningRu();
                 break;
             }
             default:

@@ -1,36 +1,33 @@
-package uz.interlab.entity.analysis;
+package uz.interlab.entity.instruction;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity(name = "analysis_option")
-public class AnalysisOption {
 
+@Entity
+public class InstructionMainTitle
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     String titleUz;
-
     String titleRu;
 
-    @Column(length = 3000)
     String descriptionUz;
-
-    @Column(length = 3000)
     String descriptionRu;
 
-    Double price;
-
-    @Column(unique = true)
-    String slug;
-
-    boolean popular;
-
+    String warningUz;
+    String warningRu;
 }

@@ -1,4 +1,4 @@
-package uz.interlab.entity;
+package uz.interlab.entity.service;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -12,33 +12,22 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
-@Entity(name = "address")
-public class Address
+@Entity
+public class ServiceHead
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String nameUz;
+    String titleUz;
+    String titleRu;
 
-    String nameRu;
+    String subTitleUz;
+    String subTitleRu;
 
-    String locationUz;
-
-    String locationRu;
-
-    String url;
-
-    @ElementCollection
-    List<String> workingTimeUz;
+    String descriptionUz;
+    String descriptionRu;
 
     @ElementCollection
-    List<String> workingTimeRu;
-
-    @Column(unique = true)
-    String slug;
-
-    boolean active;
-
-    boolean main;
+    List<String> gallery;
 }

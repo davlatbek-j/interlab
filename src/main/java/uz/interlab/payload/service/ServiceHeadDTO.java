@@ -5,43 +5,47 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.service.Service;
+import uz.interlab.entity.service.ServiceHead;
 import uz.interlab.exception.LanguageNotSupportException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ServiceDetailsDTO
+public class ServiceHeadDTO
 {
-    Long serviceId;
+    Long id;
 
-    String slug;
+    String title;
 
-    String name;
+    String subTitle;
 
     String description;
 
-    String text;
+    List<String> gallery;
 
-    public ServiceDetailsDTO(Service entity, String lang)
+    public ServiceHeadDTO(ServiceHead entity, String lang)
     {
-        this.serviceId = entity.getId();
-        this.slug = entity.getSlug();
+        this.id = entity.getId();
+        this.gallery = new ArrayList<>();
+        this.gallery.addAll(entity.getGallery());
         switch (lang.toLowerCase())
         {
             case "uz":
             {
-                this.name = entity.getNameUz();
+                this.title = entity.getTitleUz();
+                this.subTitle = entity.getSubTitleUz();
                 this.description = entity.getDescriptionUz();
-                this.text = entity.getDetails().getTextUz();
                 break;
             }
             case "ru":
             {
-                this.name = entity.getNameRu();
+                this.title = entity.getTitleRu();
+                this.subTitle = entity.getSubTitleRu();
                 this.description = entity.getDescriptionRu();
-                this.text = entity.getDetails().getTextRu();
                 break;
             }
             default:

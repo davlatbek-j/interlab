@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import uz.interlab.exception.IllegalPhotoTypeException;
 import uz.interlab.exception.LanguageNotSupportException;
+import uz.interlab.exception.LotOfEffortInMinuteException;
 import uz.interlab.exception.PhotoNotFoundExcpetion;
 import uz.interlab.payload.ApiResponse;
-import uz.interlab.exception.LotOfEffortInMinuteException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler
@@ -50,18 +50,9 @@ public class GlobalExceptionHandler
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(ex.getMessage(), null));
     }
 
-//    @ExceptionHandler(DataIntegrityViolationException.class)
-//    public ResponseEntity<ApiResponse<Void>> handleDataIntegrityViolationException(DataIntegrityViolationException e){
-//        ApiResponse<Void> response=new ApiResponse<>();
-//        response.setMessage("URL already exists. Please use a unique URL.");
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-//    }
-
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ApiResponse<Void>> handleException(Exception e){
-//        ApiResponse<Void> response=new ApiResponse<>();
-//        response.setMessage("An unexpected error occurred");
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-//    }
-
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ApiResponse<?>> handleGlobalException(RuntimeException ex)
+    {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(ex.getMessage(), null));
+    }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import uz.interlab.entity.doctor.Doctor;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.doctor.DoctorDTO;
+import uz.interlab.payload.doctor.DoctorDetailsDTO;
 import uz.interlab.service.doctor.DoctorService;
 
 import java.util.List;
@@ -42,6 +43,14 @@ public class DoctorController
             @RequestHeader(value = "Accept-Language") String lang)
     {
         return doctorService.findBySlug(slug, lang);
+    }
+
+    @GetMapping("/details/{slug}")
+    ResponseEntity<ApiResponse<DoctorDetailsDTO>> detailsDoctor(
+            @RequestHeader(value = "Accept-Language") String lang,
+            @PathVariable String slug)
+    {
+        return doctorService.getDetails(slug,lang);
     }
 
     @GetMapping("/get-all")

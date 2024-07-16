@@ -13,60 +13,65 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/address")
-public class AddressController {
+public class AddressController
+{
     private final AddressService addressService;
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<Address>> createAddress(
-            @RequestParam(value = "json") String address
-
-    ) {
+            @RequestParam(value = "json") String address)
+    {
         return addressService.create(address);
     }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse<AddressDTO>> getById(
             @PathVariable Long id,
-            @RequestHeader(value = "Accept-Language") String lang
-    ) {
+            @RequestHeader(value = "Accept-Language") String lang)
+    {
         return addressService.findById(id, lang);
     }
 
     @GetMapping("/get-all")
     public ResponseEntity<ApiResponse<List<AddressDTO>>> getAll(
-            @RequestHeader(value = "Accept-Language") String lang
-    ) {
-        return addressService.findAll(lang);
+            @RequestHeader(value = "Accept-Language") String lang,
+            @RequestParam(value = "active", required = false, defaultValue = "all") String active,
+            @RequestParam(value = "main", required = false, defaultValue = "all") String main)
+    {
+        return addressService.findAll(lang, active, main);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse<Address>> updateNewness(
             @PathVariable Long id,
-            @RequestParam(value = "json", required = false) String json
-    ) {
+            @RequestParam(value = "json", required = false) String json)
+    {
         return addressService.update(id, json);
     }
 
     @PutMapping("/change-active/{id}")
-    public ResponseEntity<ApiResponse<?>> changeActive(@PathVariable Long id){
+    public ResponseEntity<ApiResponse<?>> changeActive(@PathVariable Long id)
+    {
         return addressService.changeActive(id);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse<?>> deleteNewness(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<?>> deleteNewness(@PathVariable Long id)
+    {
         return addressService.deleteById(id);
     }
 
     @GetMapping("{slug}")
     public ResponseEntity<ApiResponse<AddressDTO>> getBySlug(
             @PathVariable String slug,
-            @RequestHeader(value = "Accept-Language") String lang
-    ) {
+            @RequestHeader(value = "Accept-Language") String lang)
+    {
         return addressService.findBySlug(slug, lang);
     }
 
     @GetMapping("/get-full-data/{slug}")
-    public ResponseEntity<ApiResponse<Address>> getFullDataBySlug(@PathVariable String slug) {
+    public ResponseEntity<ApiResponse<Address>> getFullDataBySlug(@PathVariable String slug)
+    {
         return addressService.findBySlug(slug);
     }
 

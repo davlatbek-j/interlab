@@ -1,22 +1,21 @@
 package uz.interlab.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import uz.interlab.entity.instruction.Instruction;
 import uz.interlab.entity.instruction.InstructionHead;
+import uz.interlab.entity.instruction.InstructionMainTitle;
 import uz.interlab.entity.instruction.Recommendation;
 import uz.interlab.payload.ApiResponse;
-import uz.interlab.payload.instruction.InstructionDetailsDTO;
-import uz.interlab.payload.instruction.InstructionHeadDTO;
-import uz.interlab.payload.instruction.InstructionMainDTO;
-import uz.interlab.payload.instruction.RecommendationDTO;
-import uz.interlab.respository.InstructionHeadRepository;
+import uz.interlab.payload.instruction.*;
+import uz.interlab.respository.InstructionMainTitleRepository;
 import uz.interlab.respository.InstructionRepository;
+import uz.interlab.service.instruction.InstructionHeadService;
 import uz.interlab.util.SlugUtil;
 
 import java.util.ArrayList;
@@ -28,11 +27,13 @@ import java.util.List;
 public class InstructionService
 {
     private final RecommendationService recService;
+    private final InstructionHeadService headService;
     private final InstructionRepository instructionRepo;
     private final ObjectMapper jsonMapper;
     private final PhotoService photoService;
-    private final InstructionHeadRepository headRepo;
+    private final InstructionMainTitleRepository mainTitleRepo;
 
+    //Instruction
     public ResponseEntity<ApiResponse<Instruction>> create(Instruction instruction)
     {
         ApiResponse<Instruction> response = new ApiResponse<>();
@@ -96,20 +97,6 @@ public class InstructionService
         }
 
         response.setMessage("Found " + size + " Instruction(s)");
-        return ResponseEntity.status(200).body(response);
-    }
-
-    public ResponseEntity<ApiResponse<Instruction>> findById(Long id)
-    {
-        ApiResponse<Instruction> response = new ApiResponse<>();
-        if (instructionRepo.findById(id).isEmpty())
-        {
-            response.setMessage("Instruction not found by id: " + id);
-            return ResponseEntity.status(404).body(response);
-        }
-        Instruction instruction = instructionRepo.findById(id).get();
-        response.setMessage("Found");
-        response.setData(instruction);
         return ResponseEntity.status(200).body(response);
     }
 
@@ -201,7 +188,7 @@ public class InstructionService
         return ResponseEntity.status(200).body(response);
     }
 
-    public ResponseEntity<ApiResponse<List<InstructionDetailsDTO>>> findDetailsAll(String lang)
+    /*public ResponseEntity<ApiResponse<List<InstructionDetailsDTO>>> findDetailsAll(String lang)
     {
         ApiResponse<List<InstructionDetailsDTO>> response = new ApiResponse<>();
         List<Instruction> all = instructionRepo.findAll();
@@ -209,8 +196,9 @@ public class InstructionService
         all.forEach(instruction -> response.getData().add(new InstructionDetailsDTO(instruction, lang)));
         response.setMessage("Found " + all.size() + " Instruction(s)");
         return ResponseEntity.status(200).body(response);
-    }
+    }*/
 
+    // Instruction Recommendation
     public ResponseEntity<ApiResponse<Recommendation>> createRecommendation(Recommendation recommendation)
     {
         return recService.create(recommendation);
@@ -226,80 +214,69 @@ public class InstructionService
         return recService.delete();
     }
 
+    // Instruction Head
     public ResponseEntity<ApiResponse<InstructionHead>> createHead(String json, MultipartFile icon)
     {
-        ApiResponse<InstructionHead> response = new ApiResponse<>();
-        try
-        {
-            InstructionHead instructionHead = jsonMapper.readValue(json, InstructionHead.class);
-            instructionHead.setIconUrl(photoService.save(icon).getHttpUrl());
-            InstructionHead saved = headRepo.save(instructionHead);
-            response.setMessage("Created");
-            response.setData(saved);
-            return ResponseEntity.status(200).body(response);
-        } catch (JsonProcessingException e)
-        {
-            response.setMessage("Error parsing json" + e.getMessage());
-            return ResponseEntity.status(400).body(response);
-        }
+        return headService.createOrUpdate(json, icon);
     }
 
-    public ResponseEntity<ApiResponse<List<InstructionHeadDTO>>> getAllHead(String lang)
+    public ResponseEntity<ApiResponse<InstructionHeadDTO>> getHead(String lang)
     {
-        ApiResponse<List<InstructionHeadDTO>> response = new ApiResponse<>();
-        List<InstructionHead> all = headRepo.findAll();
-        all.forEach(i -> response.getData().add(new InstructionHeadDTO(i, lang)));
-        response.setMessage("Found " + all.size() + " Instruction(s)");
+        return headService.get(lang);
+    }
+
+    public ResponseEntity<ApiResponse<InstructionHead>> updateHead(String json, MultipartFile icon)
+    {
+        return headService.update(json, icon);
+    }
+
+    public ResponseEntity<ApiResponse<?>> deleteHead()
+    {
+        return headService.delete();
+    }
+
+    // Instruction main title
+    public ResponseEntity<ApiResponse<InstructionMainTitle>> createMainTitle(InstructionMainTitle mainTitle)
+    {
+        ApiResponse<InstructionMainTitle> response = new ApiResponse<>();
+        List<InstructionMainTitle> all = mainTitleRepo.findAll();
+        if (all.isEmpty())
+        {
+            response.setMessage("Created");
+            response.setData(mainTitleRepo.save(mainTitle));
+            return ResponseEntity.status(200).body(response);
+        }
+        mainTitle.setId(all.get(0).getId());
+        response.setMessage("Updated");
+        response.setData(mainTitleRepo.save(mainTitle));
         return ResponseEntity.status(200).body(response);
     }
 
-    public ResponseEntity<ApiResponse<InstructionHead>> updateHead(Long id, String json, MultipartFile icon)
+    public ResponseEntity<ApiResponse<InstructionMainTitleDTO>> getMainTitle(String lang)
     {
-        ApiResponse<InstructionHead> response = new ApiResponse<>();
-        if (!instructionRepo.existsById(id))
+        ApiResponse<InstructionMainTitleDTO> response = new ApiResponse<>();
+        List<InstructionMainTitle> all = mainTitleRepo.findAll();
+        if (all.isEmpty())
         {
-            response.setMessage("Instruction not found by id: " + id);
-            return ResponseEntity.status(404).body(response);
+            response.setMessage("Main title is null");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
-
-        InstructionHead head = new InstructionHead();
-        String oldIcon = headRepo.findIconUrlById(id);
-
-        try
-        {
-            if (json != null)
-            {
-                head = jsonMapper.readValue(json, InstructionHead.class);
-                head.setIconUrl(oldIcon);
-                head.setId(id);
-            } else
-                head = headRepo.findById(id).get();
-
-            if (icon != null && !icon.isEmpty())
-                head.setIconUrl(photoService.save(icon).getHttpUrl());
-            else
-                head.setIconUrl(oldIcon);
-            response.setMessage("Updated");
-            response.setData(head);
-            return ResponseEntity.status(200).body(response);
-        } catch (JsonProcessingException e)
-        {
-            response.setMessage("Error parsing json" + e.getMessage());
-            return ResponseEntity.status(400).body(response);
-        }
-
+        response.setMessage("Found");
+        response.setData(new InstructionMainTitleDTO(all.get(0), lang));
+        return ResponseEntity.status(200).body(response);
     }
 
-    public ResponseEntity<ApiResponse<?>> deleteHead(Long id)
+    public ResponseEntity<ApiResponse<?>> deleteMainTitle()
     {
-        ApiResponse<InstructionHead> response = new ApiResponse<>();
-        if (!instructionRepo.existsById(id))
+        ApiResponse<?> response = new ApiResponse<>();
+        if (mainTitleRepo.findAll().isEmpty())
         {
-            response.setMessage("Instruction not found by id: " + id);
-            return ResponseEntity.status(404).body(response);
+            response.setMessage("Main title is already deleted or not created yet");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
-        headRepo.deleteById(id);
+        mainTitleRepo.deleteAll();
         response.setMessage("Deleted");
         return ResponseEntity.status(200).body(response);
     }
+
 }
