@@ -29,11 +29,18 @@ public class FooterDTO
 
     String facebookUrl;
 
+    String creatorUrl;
+
     String tgIconUrl;
+
 
     String youtubeIconUrl;
 
     String instaIconUrl;
+
+    String facebookIconUrl;
+
+    String creatorIconUrl;
 
     List<FooterOptionDTO> option;
 
@@ -49,7 +56,11 @@ public class FooterDTO
         this.instagramUrl = entity.getInstagramUrl();
         this.youtubeUrl = entity.getYoutubeUrl();
         this.facebookUrl = entity.getFacebookUrl();
-//        this.creator = entity.getCreator();
+        this.tgIconUrl=entity.getTelegramIconUrl();
+        this.youtubeIconUrl=entity.getYoutubeIconUrl();
+        this.instaIconUrl=entity.getInstagramIconUrl();
+        this.facebookIconUrl=entity.getInstagramIconUrl();
+        this.creatorIconUrl=entity.getCreatorIconUrl();
         this.active = entity.isActive();
         this.option = new ArrayList<>();
         entity.getFooterOption().forEach(i -> this.option.add(new FooterOptionDTO(i, lang)));
