@@ -9,9 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import uz.interlab.entity.Photo;
 import uz.interlab.entity.doctor.Doctor;
+import uz.interlab.entity.doctor.DoctorHead;
 import uz.interlab.payload.ApiResponse;
 import uz.interlab.payload.doctor.DoctorDTO;
 import uz.interlab.payload.doctor.DoctorDetailsDTO;
+import uz.interlab.payload.doctor.DoctorHeadDTO;
 import uz.interlab.respository.DoctorRepository;
 import uz.interlab.service.PhotoService;
 import uz.interlab.util.SlugUtil;
@@ -28,6 +30,7 @@ public class DoctorService
     private final DoctorRepository doctorRepo;
     private final PhotoService photoService;
     private final ObjectMapper jsonMapper;
+    private final DoctorHeadService headService;
 
     public ResponseEntity<ApiResponse<Doctor>> create(String strDoctor, MultipartFile photoFile)
     {
@@ -217,5 +220,31 @@ public class DoctorService
         response.setMessage("Found");
         response.setData(new DoctorDetailsDTO(doctor, lang));
         return ResponseEntity.status(200).body(response);
+    }
+
+    // Doctor page Head
+    public ResponseEntity<ApiResponse<DoctorHead>> createHead(String json, MultipartFile photo)
+    {
+        return headService.create(json, photo);
+    }
+
+    public ResponseEntity<ApiResponse<DoctorHeadDTO>> getHead(String lang)
+    {
+        return headService.get(lang);
+    }
+
+    public ResponseEntity<ApiResponse<DoctorHead>> updateHead(String json, MultipartFile photo)
+    {
+        return headService.update(json, photo);
+    }
+
+    public ResponseEntity<ApiResponse<?>> deleteHead()
+    {
+        return headService.delete();
+    }
+
+    public ResponseEntity<ApiResponse<DoctorHead>> getHeadFullData()
+    {
+        return headService.getFullData();
     }
 }

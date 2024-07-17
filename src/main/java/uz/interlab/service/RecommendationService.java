@@ -67,4 +67,18 @@ public class RecommendationService
         response.setMessage("Deleted");
         return ResponseEntity.status(200).body(response);
     }
+
+    public ResponseEntity<ApiResponse<Recommendation>> getFullData()
+    {
+        ApiResponse<Recommendation> response = new ApiResponse<>();
+        List<Recommendation> all = recRepo.findAll();
+        if (all.isEmpty())
+        {
+            response.setMessage("Recommendation is null");
+            return ResponseEntity.status(404).body(response);
+        }
+        response.setMessage("Found");
+        response.setData(all.get(0));
+        return ResponseEntity.status(200).body(response);
+    }
 }

@@ -131,4 +131,19 @@ public class InstructionHeadService
         response.setMessage("Deleted");
         return ResponseEntity.status(200).body(response);
     }
+
+    public ResponseEntity<ApiResponse<InstructionHead>> getFullData()
+    {
+        ApiResponse<InstructionHead> response = new ApiResponse<>();
+        List<InstructionHead> all = headRepo.findAll();
+        if (all.isEmpty())
+        {
+            response.setMessage("Instruction Head is null");
+            return ResponseEntity.status(404).body(response);
+        }
+        response.setMessage("Found");
+        response.setData(all.get(0));
+        return ResponseEntity.status(200).body(response);
+    }
+
 }

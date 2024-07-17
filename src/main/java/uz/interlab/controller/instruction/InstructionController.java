@@ -20,7 +20,6 @@ import java.util.List;
 @RequestMapping("/instruction")
 public class InstructionController
 {
-
     private final InstructionService instructionService;
 
     @PostMapping("/create")
@@ -132,11 +131,17 @@ public class InstructionController
         return instructionService.createRecommendation(recommendation);
     }
 
-    @GetMapping("/recommendation/get")
+    @GetMapping("/recommendation")
     public ResponseEntity<ApiResponse<RecommendationDTO>> getRecommendation(
             @RequestHeader(value = "Accept-Language") String lang)
     {
         return instructionService.getRecommendation(lang);
+    }
+
+    @GetMapping("/recommendation/full-data")
+    public ResponseEntity<ApiResponse<Recommendation>> getRecommendationFullData()
+    {
+        return instructionService.getRecommendationFullData();
     }
 
     @PutMapping("/recommendation/update")
@@ -152,6 +157,8 @@ public class InstructionController
         return instructionService.deleteRecommendation();
     }
 
+
+    //Instruction Head
     @PostMapping("/head/create")
     public ResponseEntity<ApiResponse<InstructionHead>> create(
             @RequestParam(value = "json") String json,
@@ -166,6 +173,13 @@ public class InstructionController
     {
         return instructionService.getHead(lang);
     }
+
+    @GetMapping("/head/full-data")
+    public ResponseEntity<ApiResponse<InstructionHead>> getHeadFullData()
+    {
+        return instructionService.getHeadFullData();
+    }
+
 
     @PutMapping("/head/update")
     public ResponseEntity<ApiResponse<InstructionHead>> update(

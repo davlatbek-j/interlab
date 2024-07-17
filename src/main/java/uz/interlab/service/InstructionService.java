@@ -29,8 +29,6 @@ public class InstructionService
     private final RecommendationService recService;
     private final InstructionHeadService headService;
     private final InstructionRepository instructionRepo;
-    private final ObjectMapper jsonMapper;
-    private final PhotoService photoService;
     private final InstructionMainTitleRepository mainTitleRepo;
 
     //Instruction
@@ -209,6 +207,11 @@ public class InstructionService
         return recService.get(lang);
     }
 
+    public ResponseEntity<ApiResponse<Recommendation>> getRecommendationFullData()
+    {
+        return recService.getFullData();
+    }
+
     public ResponseEntity<ApiResponse<?>> deleteRecommendation()
     {
         return recService.delete();
@@ -279,4 +282,8 @@ public class InstructionService
         return ResponseEntity.status(200).body(response);
     }
 
+    public ResponseEntity<ApiResponse<InstructionHead>> getHeadFullData()
+    {
+        return headService.getFullData();
+    }
 }
