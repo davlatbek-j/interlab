@@ -1,15 +1,11 @@
-package uz.interlab.entity.form.vacancyPage;
+package uz.interlab.entity.form;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.form.Question;
 
 import java.util.List;
 
@@ -19,7 +15,8 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class VacancyPageForm
+//Записаться на приём онлайн и получить услугу минуя живую очередь
+public class OnlineAppointmentForm
 {
     @Id
     Long id;
@@ -27,9 +24,13 @@ public class VacancyPageForm
     String titleUz;
     String titleRu;
 
+    String subTitleUz;
+    String subTitleRu;
+
     String descriptionUz;
     String descriptionRu;
 
     @OneToMany(cascade = CascadeType.ALL)
     List<Question> question;
+
 }

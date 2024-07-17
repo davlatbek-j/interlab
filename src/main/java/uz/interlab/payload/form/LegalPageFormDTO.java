@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.form.legalPage.LegalPageForm;
+import uz.interlab.entity.form.LegalPageForm;
 import uz.interlab.exception.LanguageNotSupportException;
 
 import java.util.ArrayList;

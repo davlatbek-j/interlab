@@ -1,4 +1,4 @@
-package uz.interlab.entity.form.onlineAppointment;
+package uz.interlab.entity.form;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.form.Question;
 
 import java.util.List;
 
@@ -16,17 +15,14 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-//Записаться на приём онлайн и получить услугу минуя живую очередь
-public class OnlineAppointmentForm
+//Онлайн запись Doctor page
+public class DoctorForm
 {
     @Id
     Long id;
 
     String titleUz;
     String titleRu;
-
-    String subTitleUz;
-    String subTitleRu;
 
     String descriptionUz;
     String descriptionRu;

@@ -1,4 +1,4 @@
-package uz.interlab.entity.form.onlineRegstration;
+package uz.interlab.entity.form;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.form.Question;
 
 import java.util.List;
 
@@ -16,8 +15,8 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-//Онлайн запись Doctor page
-public class DoctorForm
+//Оставить заявку Заполните форму , чтобы оставить заявку на консультацию и обсудить условия сотрудничества. Мы свяжемся с вами в ближайшее время
+public class LegalPageForm
 {
     @Id
     Long id;
@@ -30,5 +29,4 @@ public class DoctorForm
 
     @OneToMany(cascade = CascadeType.ALL)
     List<Question> question;
-
 }

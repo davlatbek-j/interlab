@@ -1,12 +1,14 @@
-package uz.interlab.entity.form.mainPage;
+package uz.interlab.entity.form;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.form.Question;
 
 import java.util.List;
 
@@ -16,16 +18,17 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-//Оставьте заявку и мы перезвоним вам в ближайшее время
-public class MainPageForm
+public class VacancyPageForm
 {
     @Id
     Long id;
 
-    String textUz;
-    String textRu;
+    String titleUz;
+    String titleRu;
+
+    String descriptionUz;
+    String descriptionRu;
 
     @OneToMany(cascade = CascadeType.ALL)
     List<Question> question;
 }
-

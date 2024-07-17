@@ -1,4 +1,4 @@
-package uz.interlab.entity.form.onlineAppointment;
+package uz.interlab.entity.form;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -16,7 +16,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
-public class OnlineAppointmentRequest
+public class FormRequest
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,5 +33,4 @@ public class OnlineAppointmentRequest
     {
         createdAt = new Date();
     }
-
 }

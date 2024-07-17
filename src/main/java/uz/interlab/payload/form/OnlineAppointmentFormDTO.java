@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import uz.interlab.entity.form.onlineAppointment.OnlineAppointmentForm;
+import uz.interlab.entity.form.OnlineAppointmentForm;
 import uz.interlab.exception.LanguageNotSupportException;
 
 import java.util.ArrayList;
