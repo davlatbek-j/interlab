@@ -24,7 +24,7 @@ import java.nio.file.Paths;
 @Service
 public class PhotoService
 {
-    @Value("${photo.upload.path}")
+    @Value("${upload.path}")
     private String photoUploadPath;
 
     private final PhotoRepository photoRepo;

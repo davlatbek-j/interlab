@@ -1,5 +1,6 @@
 package uz.interlab.entity.form;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ public class FormRequest
     List<String> answer;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     Date createdAt;
 
     @PrePersist
