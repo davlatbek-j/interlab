@@ -25,7 +25,9 @@ public class ServiceHead
     String subTitleUz;
     String subTitleRu;
 
+    @Column(length = 1000)
     String descriptionUz;
+    @Column(length = 1000)
     String descriptionRu;
 
     @ElementCollection

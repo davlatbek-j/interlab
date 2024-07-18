@@ -32,6 +32,7 @@ public class AboutUsPage {
 
     boolean active;
 
+    @ElementCollection
     List<String> photoUrls;
 
 }
